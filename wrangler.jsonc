@@ -1,45 +1,122 @@
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "irwanmotor",
 	"main": "src/index.js",
-	"compatibility_date": "2026-05-22",
+	"compatibility_date": "2026-06-19",
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public"
 	],
 	"assets": {
-		// The path to the directory containing the `index.html` file to be served at `/`
 		"directory": "./public"
 	},
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
-	/**
-	 * Smart Placement
-	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-	 */
-	// "placement": {  "mode": "smart" }
-	/**
-	 * Bindings
-	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-	 * databases, object storage, AI inference, real-time communication and more.
-	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-	 */
-	/**
-	 * Environment Variables
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-	 * Note: Use secrets to store sensitive data.
-	 * https://developers.cloudflare.com/workers/configuration/secrets/
-	 */
-	// "vars": {  "MY_VARIABLE": "production_value" }
-	/**
-	 * Service Bindings (communicate between multiple Workers)
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
-	 */
-	// "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
+	"upload_source_maps": true,
+	"vars": {
+		"PROJECT_DISPLAY_NAME": "Irwan Motor",
+		"AUTH_SERVICE_KEY": "irwanmotor-auth",
+		"AUTH_SERVICE_NAME": "Irwan Motor Auth",
+		"ACCESS_TOKEN_TTL_SECONDS": "900",
+		"REFRESH_TOKEN_TTL_DAYS": "30",
+		"OTP_TTL_SECONDS": "300",
+		"OTP_MAX_ATTEMPTS": "5",
+		"OTP_RESEND_COOLDOWN_SECONDS": "60",
+		"AUTH_ISSUER": "http://localhost:8787",
+		"AUTH_AUDIENCE": "irwanmotor-services",
+		"GOWA_API_BASE": "http://localhost:3000",
+		"PASSWORD_PBKDF2_ITERATIONS": "100000",
+		"ENABLE_ADMIN_SEED": "false",
+		"ENABLE_DIRECT_OTP_FALLBACK": "true",
+		"PERMISSION_CACHE_TTL_SECONDS": "120",
+		"SESSION_CACHE_TTL_SECONDS": "60",
+		"OTP_MESSAGE_TEMPLATE": "Kode OTP Irwan Motor Anda: {{otp}}. Berlaku {{ttl_minutes}} menit. Jangan berikan kode ini kepada siapa pun.",
+		"CORS_ORIGINS": "*"
+	},
+	"secrets": {
+		"required": [
+			"JWT_SECRET",
+			"REFRESH_TOKEN_PEPPER",
+			"PASSWORD_PEPPER",
+			"OTP_PEPPER",
+			"ADMIN_API_TOKEN",
+			"GOWA_API_TOKEN"
+		]
+	},
+	"d1_databases": [
+		{
+			"binding": "AUTH_DB",
+			"database_name": "irwanmotor_auth_core"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "AUTH_CACHE"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "AUTH_BACKUP_BUCKET"
+		}
+	],
+	"queues": {
+		"producers": [
+			{
+				"binding": "OTP_QUEUE",
+				"queue": "irwanmotor-auth-otp"
+			},
+			{
+				"binding": "AUDIT_QUEUE",
+				"queue": "irwanmotor-auth-audit"
+			},
+			{
+				"binding": "BACKUP_QUEUE",
+				"queue": "irwanmotor-auth-backup"
+			}
+		],
+		"consumers": [
+			{
+				"queue": "irwanmotor-auth-otp",
+				"max_batch_size": 10,
+				"max_batch_timeout": 5
+			},
+			{
+				"queue": "irwanmotor-auth-audit",
+				"max_batch_size": 25,
+				"max_batch_timeout": 10
+			},
+			{
+				"queue": "irwanmotor-auth-backup",
+				"max_batch_size": 5,
+				"max_batch_timeout": 10
+			}
+		]
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "AUTH_RATE_LIMITER",
+				"class_name": "RateLimitDO"
+			},
+			{
+				"name": "AUTH_SESSION_GUARD",
+				"class_name": "SessionGuardDO"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": [
+				"RateLimitDO",
+				"SessionGuardDO"
+			]
+		}
+	],
+	"triggers": {
+		"crons": [
+			"0 */6 * * *"
+		]
+	}
 }

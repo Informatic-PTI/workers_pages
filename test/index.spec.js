@@ -1,50 +1,36 @@
-import {
-	env,
-	createExecutionContext,
-	waitOnExecutionContext,
-	SELF,
-} from "cloudflare:test";
-import { describe, it, expect } from "vitest";
-import worker from "../src";
+import { describe, expect, it } from "vitest";
+import worker from "../src/index.js";
+import { normalizePhone } from "../src/lib/phone.js";
 
-describe("Hello World user worker", () => {
-	describe("request for /message", () => {
-		it('/ responds with "Hello, World!" (unit style)', async () => {
-			const request = new Request("http://example.com/message");
-			// Create an empty context to pass to `worker.fetch()`.
-			const ctx = createExecutionContext();
-			const response = await worker.fetch(request, env, ctx);
-			// Wait for all `Promise`s passed to `ctx.waitUntil()` to settle before running test assertions
-			await waitOnExecutionContext(ctx);
-			expect(await response.text()).toMatchInlineSnapshot(`"Hello, World!"`);
-		});
+const env = {
+	AUTH_DB: {
+		prepare() {
+			return { first: async () => ({ ok: 1 }) };
+		},
+	},
+	AUTH_CACHE: null,
+	AUTH_BACKUP_BUCKET: null,
+	OTP_QUEUE: null,
+	AUDIT_QUEUE: null,
+};
 
-		it('responds with "Hello, World!" (integration style)', async () => {
-			const request = new Request("http://example.com/message");
-			const response = await SELF.fetch(request);
-			expect(await response.text()).toMatchInlineSnapshot(`"Hello, World!"`);
-		});
+describe("irwanmotor auth", () => {
+	it("normalizes Indonesian phone numbers", () => {
+		expect(normalizePhone("085795717974")).toBe("6285795717974");
+		expect(normalizePhone("+6285795717974")).toBe("6285795717974");
 	});
 
-	describe("request for /random", () => {
-		it("/ responds with a random UUID (unit style)", async () => {
-			const request = new Request("http://example.com/random");
-			// Create an empty context to pass to `worker.fetch()`.
-			const ctx = createExecutionContext();
-			const response = await worker.fetch(request, env, ctx);
-			// Wait for all `Promise`s passed to `ctx.waitUntil()` to settle before running test assertions
-			await waitOnExecutionContext(ctx);
-			expect(await response.text()).toMatch(
-				/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/
-			);
-		});
+	it("returns a health response", async () => {
+		const response = await worker.fetch(new Request("https://irwanmotor.example/health"), env, { waitUntil() {} });
+		const data = await response.json();
+		expect(data.ok).toBe(true);
+		expect(data.service).toBe("irwanmotor-auth");
+	});
 
-		it("responds with a random UUID (integration style)", async () => {
-			const request = new Request("http://example.com/random");
-			const response = await SELF.fetch(request);
-			expect(await response.text()).toMatch(
-				/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/
-			);
-		});
+	it("serves the hyperdashboard shell", async () => {
+		const response = await worker.fetch(new Request("https://irwanmotor.example/dashboard"), env, { waitUntil() {} });
+		expect(response.status).toBe(200);
+		expect(response.headers.get("content-type")).toContain("text/html");
+		expect(await response.text()).toContain("Irwan Motor Auth Dashboard");
 	});
 });
