@@ -34,7 +34,7 @@ npx wrangler queues create irwanmotor-auth-audit
 npx wrangler queues create irwanmotor-auth-backup
 ```
 
-KV dan R2 bisa otomatis dibuat oleh Wrangler saat deploy karena binding di `wrangler.jsonc` tidak mengunci ID. Jika ingin manual, buat namespace/bucket dari dashboard lalu isi `id` atau `bucket_name` ke `wrangler.jsonc`.
+KV sudah dikunci ke namespace `irwanmotor-auth-cache`. R2 backup belum aktif karena akun Cloudflare saat ini belum mengaktifkan R2; endpoint backup bisa dipakai setelah R2 diaktifkan dan binding `AUTH_BACKUP_BUCKET` ditambahkan lagi ke `wrangler.jsonc`.
 
 Apply schema:
 
@@ -75,7 +75,7 @@ npx wrangler dev
 Dashboard:
 
 ```text
-http://localhost:8787/dashboard
+https://bengkel.irwanmotor.workers.dev/dashboard
 ```
 
 Health:
@@ -153,4 +153,4 @@ Plaintext OTP hanya ada di payload queue/direct delivery, tidak disimpan di D1 d
 - `wrangler.jsonc` adalah source of truth binding Worker.
 - Jalankan `npx wrangler types` setelah mengubah binding.
 - Jangan copy credential dari project `workers-auth`.
-- Untuk deploy sungguhan, ubah `AUTH_ISSUER` dari `http://localhost:8787` ke URL Worker deployment.
+- Production Worker URL: `https://bengkel.irwanmotor.workers.dev`.

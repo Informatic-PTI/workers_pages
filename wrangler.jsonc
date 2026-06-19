@@ -1,11 +1,10 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "irwanmotor",
+	"name": "bengkel",
 	"main": "src/index.js",
 	"compatibility_date": "2026-06-19",
 	"compatibility_flags": [
-		"nodejs_compat",
-		"global_fetch_strictly_public"
+		"nodejs_compat"
 	],
 	"assets": {
 		"directory": "./public"
@@ -23,7 +22,7 @@
 		"OTP_TTL_SECONDS": "300",
 		"OTP_MAX_ATTEMPTS": "5",
 		"OTP_RESEND_COOLDOWN_SECONDS": "60",
-		"AUTH_ISSUER": "http://localhost:8787",
+		"AUTH_ISSUER": "https://bengkel.irwanmotor.workers.dev",
 		"AUTH_AUDIENCE": "irwanmotor-services",
 		"GOWA_API_BASE": "http://localhost:3000",
 		"PASSWORD_PBKDF2_ITERATIONS": "100000",
@@ -47,17 +46,14 @@
 	"d1_databases": [
 		{
 			"binding": "AUTH_DB",
-			"database_name": "irwanmotor_auth_core"
+			"database_name": "irwanmotor_auth_core",
+			"database_id": "47ae2ad0-9e5c-4539-bcb6-dd758f3abd06"
 		}
 	],
 	"kv_namespaces": [
 		{
-			"binding": "AUTH_CACHE"
-		}
-	],
-	"r2_buckets": [
-		{
-			"binding": "AUTH_BACKUP_BUCKET"
+			"binding": "AUTH_CACHE",
+			"id": "d0e3f21f860e41ce969b5063c48b69d0"
 		}
 	],
 	"queues": {
