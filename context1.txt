@@ -1,0 +1,19 @@
+saya sedang membuat tugas kampus. sebelumnya saya ingin membuat auth di project ini
+
+kondisi sekarang saya sudah copy sebagian auth ke repo ini.
+saya punya project dibelakang yang sudah jadi dan production level di C:\Users\athth\Documents\project\workers\workers-auth
+nah saya mau implementasikan di C:\Users\athth\Documents\project\bengkel2\workers_pages\ dengan credential yang berbeda. buat usersnya berbeda, tokennya berbeda. karena ini bukan production level jadi buatkan saja secret disini C:\Users\athth\Documents\project\bengkel2\workers_pages\.var.vir.vur dan semua var lainnya untuk note ke anggota tim lainnya
+
+
+jangan apa apakan workers-auth saya, hanya sebagai acuan saja, jangan sentuh sama sekali.
+bantu saya untuk membuat auth yang nyata disini. buat readme.md sebagai dokumentasi juga.
+
+
+hyperusers nya buat jadi
+ATHTHAA
+awikwok123
+
+token admin juga buatkan saja dan jangan lupa taruh varnya di file yang saya maksud
+otp buat juga deh, schema dbnya masih ngikutin seperti workers-auth.
+
+nama project. jika ada profile identik, buat lebih general

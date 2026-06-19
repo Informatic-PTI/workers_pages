@@ -2,14 +2,18 @@
   "name": "irwanmotor",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
+    "hash-password": "node scripts/hash-password.js",
+    "seed": "node scripts/seed.js",
     "start": "wrangler dev",
     "test": "vitest"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.12.4",
+    "@types/node": "^26.0.0",
     "vitest": "~3.2.0",
     "wrangler": "^4.93.1"
   }
