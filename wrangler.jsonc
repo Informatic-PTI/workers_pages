@@ -24,7 +24,7 @@
 		"OTP_RESEND_COOLDOWN_SECONDS": "60",
 		"AUTH_ISSUER": "https://bengkel.irwanmotor.workers.dev",
 		"AUTH_AUDIENCE": "irwanmotor-services",
-		"GOWA_API_BASE": "http://localhost:3000",
+		"GOWA_API_BASE": "https://vanats.alwaysdata.net",
 		"PASSWORD_PBKDF2_ITERATIONS": "100000",
 		"ENABLE_ADMIN_SEED": "false",
 		"ENABLE_DIRECT_OTP_FALLBACK": "true",
