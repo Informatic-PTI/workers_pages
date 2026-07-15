@@ -20,6 +20,17 @@ export async function permissionsForUser(env, userId, isHyperuser = false) {
 	return permissions;
 }
 
+export async function rolesForUser(env, userId) {
+	const result = await env.AUTH_DB.prepare(
+		`SELECT r.role_key
+		 FROM roles r
+		 JOIN user_roles ur ON ur.role_id = r.id
+		 WHERE ur.user_id = ?
+		 ORDER BY r.role_key`,
+	).bind(userId).all();
+	return (result.results || []).map((row) => row.role_key);
+}
+
 export async function hasPermission(env, user, permission) {
 	if (user.is_hyperuser) return true;
 	const permissions = await permissionsForUser(env, user.id, false);

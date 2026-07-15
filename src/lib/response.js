@@ -58,7 +58,7 @@ export function applyCors(response, request, env) {
 		headers.set("access-control-allow-origin", "*");
 	}
 	headers.set("access-control-allow-methods", "GET,POST,PATCH,DELETE,OPTIONS");
-	headers.set("access-control-allow-headers", "Authorization,Content-Type,X-Request-Id");
+	headers.set("access-control-allow-headers", "Authorization,Content-Type,X-Request-Id,Idempotency-Key,X-Entity-Type,X-Entity-Id");
 	headers.set("access-control-max-age", "86400");
 	return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }

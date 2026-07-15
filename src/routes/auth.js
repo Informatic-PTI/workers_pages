@@ -1,6 +1,6 @@
 import { createPasswordCredential, findUserAndPasswordCredentialByIdentifier } from "../db/credentials.js";
 import { createOtpChallenge, getOtpChallenge, incrementOtpAttempt, markOtpUsed } from "../db/otpChallenges.js";
-import { hasPermission, permissionsForUser } from "../db/permissions.js";
+import { hasPermission, permissionsForUser, rolesForUser } from "../db/permissions.js";
 import { createRefreshToken, findRefreshTokenByPlaintext, revokeRefreshTokenFamily, revokeRefreshTokensBySession, revokeRefreshTokensByUser, rotateRefreshToken } from "../db/refreshTokens.js";
 import { createSession, listSessionsForUser, revokeSession, revokeUserSessions, touchSession } from "../db/sessions.js";
 import { getNumberSetting, getUserAccessTtlSeconds, getUserRefreshTtlDays, getUserSkipOtp } from "../db/settings.js";
@@ -327,7 +327,11 @@ export async function handleAuth(request, env, ctx, request_id, parts) {
 
 	if (method === "GET" && leaf === "me") {
 		const { user, session } = await requireAuth(request, env, request_id);
-		return ok({ user: publicUser(user), session_id: session.id, permissions: await permissionsForUser(env, user.id, Boolean(user.is_hyperuser)) }, request_id);
+		const [permissions, roles] = await Promise.all([
+			permissionsForUser(env, user.id, Boolean(user.is_hyperuser)),
+			user.is_hyperuser ? Promise.resolve(["admin", "hyperuser"]) : rolesForUser(env, user.id),
+		]);
+		return ok({ user: publicUser(user), session_id: session.id, permissions, roles }, request_id);
 	}
 
 	if (method === "GET" && leaf === "sessions") {

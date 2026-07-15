@@ -1,9 +1,17 @@
 import { ok } from "../lib/response.js";
 
 export async function handleHealth(env, request_id) {
-	const checks = { d1: false, kv: Boolean(env.AUTH_CACHE), r2: Boolean(env.AUTH_BACKUP_BUCKET), queues: Boolean(env.OTP_QUEUE && env.AUDIT_QUEUE) };
+	const checks = {
+		d1: false,
+		kv: Boolean(env.AUTH_CACHE),
+		r2: Boolean(env.AUTH_BACKUP_BUCKET),
+		queues: Boolean(env.OTP_QUEUE && env.AUDIT_QUEUE),
+		app_d1: Boolean(env.DB),
+		app_kv: Boolean(env.CACHE),
+		app_r2: Boolean(env.BUCKET),
+	};
 	try {
-		await env.AUTH_DB.prepare("SELECT 1 AS ok").first();
+		await (env.AUTH_DB || env.DB).prepare("SELECT 1 AS ok").first();
 		checks.d1 = true;
 	} catch {
 		checks.d1 = false;

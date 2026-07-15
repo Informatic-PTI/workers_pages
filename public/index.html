@@ -1,32 +1,23 @@
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hello, World!</title>
-	</head>
-	<body>
-		<h1 id="heading"></h1>
-		<p>This page comes from a static asset stored at `public/index.html` as configured in `wrangler.jsonc`.</p>
-		<button id="button" type="button">Fetch a random UUID</button>
-		<output id="random" for="button"></output>
-		<script>
-			fetch('/message')
-				.then((resp) => resp.text())
-				.then((text) => {
-					const h1 = document.getElementById('heading');
-					h1.textContent = text;
-				});
-
-			const button = document.getElementById("button");
-			button.addEventListener("click", () => {
-				fetch('/random')
-					.then((resp) => resp.text())
-					.then((text) => {
-						const random = document.getElementById('random');
-						random.textContent = text;
-					});
-			});
-		</script>
-	</body>
+<html lang="id">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#2563eb">
+	<meta name="description" content="Sistem manajemen operasional Bengkel Irwan Motor">
+	<title>Bengkel Irwan Motor</title>
+	<link rel="stylesheet" href="/css/tokens.css">
+	<link rel="stylesheet" href="/css/base.css">
+	<link rel="stylesheet" href="/css/layout.css">
+	<link rel="stylesheet" href="/css/components.css">
+	<link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+	<a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+	<div id="app" aria-live="polite">
+		<div class="boot-screen"><div class="spinner" aria-hidden="true"></div><p>Menyiapkan Irwan Motor…</p></div>
+	</div>
+	<div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+	<script type="module" src="/js/app.js"></script>
+</body>
 </html>

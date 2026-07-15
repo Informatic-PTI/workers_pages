@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Booking Baru - MotoPro SaaS</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f7f9fb",
+                    "tertiary-fixed": "#6ffbbe",
+                    "inverse-surface": "#2d3133",
+                    "background": "#f7f9fb",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary": "#ffffff",
+                    "primary": "#004ac6",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "surface-bright": "#f7f9fb",
+                    "primary-container": "#2563eb",
+                    "surface-dim": "#d8dadc",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#ffddb8",
+                    "surface-container": "#eceef0",
+                    "tertiary": "#006242",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#bdffdb",
+                    "secondary": "#855300",
+                    "surface-container-high": "#e6e8ea",
+                    "on-background": "#191c1e",
+                    "outline": "#737686",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "primary-fixed": "#dbe1ff",
+                    "on-primary-fixed": "#00174b",
+                    "secondary-container": "#fea619",
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#191c1e",
+                    "on-primary-container": "#eeefff",
+                    "tertiary-container": "#007d55",
+                    "surface-variant": "#e0e3e5",
+                    "on-secondary-container": "#684000",
+                    "surface-tint": "#0053db",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-tertiary-fixed": "#002113",
+                    "inverse-primary": "#b4c5ff",
+                    "outline-variant": "#c3c6d7",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-highest": "#e0e3e5",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "xxl": "48px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "margin-desktop": "32px",
+                    "lg": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "metadata": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-lg-mobile": ["Inter", "sans-serif"],
+                    "display-kpi": ["Inter", "sans-serif"],
+                    "label-sm": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "headline-lg": ["Inter", "sans-serif"],
+                    "body-md": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "metadata": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+                    "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                    "display-kpi": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                    "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                    "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                    "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Hide scrollbar for clean UI but allow scrolling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #d8dadc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md h-screen overflow-hidden flex selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ==================== SIDE NAVIGATION SHELL ==================== -->
+<aside class="bg-surface-container-lowest h-screen w-64 border-r border-outline-variant shadow-sm flex flex-col h-full py-lg px-md shrink-0 hidden md:flex relative z-20">
+<!-- Header / Brand -->
+<div class="flex items-center gap-md mb-xl px-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary font-headline-md">two_wheeler</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">MotoPro SaaS</h1>
+<p class="font-metadata text-metadata text-on-surface-variant">Premium Management</p>
+</div>
+</div>
+<!-- CTA Action -->
+<button class="mb-lg bg-primary text-on-primary hover:bg-surface-tint active:scale-95 transition-all duration-200 rounded-lg py-sm px-md flex items-center justify-center gap-sm font-label-sm text-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Service Order
+        </button>
+<!-- Navigation Tabs -->
+<nav class="flex-1 overflow-y-auto space-y-xs pb-xl">
+<!-- Inactive -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<!-- ACTIVE: Booking -->
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-semibold rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="font-body-md text-body-md">Booking</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">build_circle</span>
+<span class="font-body-md text-body-md">Service Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">groups</span>
+<span class="font-body-md text-body-md">Customers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">motorcycle</span>
+<span class="font-body-md text-body-md">Vehicles</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">engineering</span>
+<span class="font-body-md text-body-md">Mechanics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">handyman</span>
+<span class="font-body-md text-body-md">Spare Parts</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">inventory_2</span>
+<span class="font-body-md text-body-md">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">payments</span>
+<span class="font-body-md text-body-md">Cashier</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">receipt_long</span>
+<span class="font-body-md text-body-md">Transactions</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">assessment</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">history</span>
+<span class="font-body-md text-body-md">Logs</span>
+</a>
+</nav>
+</aside>
+<!-- ==================== MAIN CONTENT AREA ==================== -->
+<main class="flex-1 flex flex-col min-w-0 relative h-full">
+<!-- ==================== TOP NAVIGATION SHELL ==================== -->
+<header class="bg-surface-container-lowest/80 text-primary font-body-md text-body-md border-b border-outline-variant backdrop-blur-md shadow-sm flex justify-between items-center h-16 px-xl sticky top-0 z-40 w-full transition-all">
+<!-- Mobile Brand / Menu Toggle (Visible only on small screens if side nav is hidden) -->
+<div class="flex items-center gap-md md:hidden">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary">MotoPro</span>
+</div>
+<!-- Global Search (Left aligned as per JSON spec 'search_bar: on_left' within context of main area) -->
+<div class="hidden md:flex flex-1 max-w-md focus-within:ring-2 focus-within:ring-primary rounded-lg transition-shadow bg-surface-container-low border border-outline-variant items-center px-sm py-xs">
+<span class="material-symbols-outlined text-outline ml-sm mr-xs">search</span>
+<input class="bg-transparent border-none outline-none focus:ring-0 text-on-surface w-full font-body-md text-body-md placeholder:text-outline/70" placeholder="Search orders, parts, or customers..." type="text">
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-md ml-auto">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm rounded-full hover:bg-surface-container-high relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-xs"></div>
+<button class="bg-surface text-on-surface-variant border border-outline-variant hover:border-primary hover:text-primary font-label-sm text-label-sm px-md py-sm rounded-lg transition-all active:scale-95 hidden lg:block">
+                    Quick Create
+                </button>
+<div class="w-9 h-9 rounded-full border-2 border-surface bg-surface-container-high overflow-hidden ml-sm cursor-pointer hover:border-primary transition-colors">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A small, professional headshot of an auto repair shop manager, smiling slightly, well-lit against a neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH6EyWTxxB5dNQEQBjNcVwlx449S2j6lBa1ADPTHG5Ut0sn4_6ZzW6lyd7ThMdCXRX2OnF0LAwt10ud828mgbXn1laDYETAvDsVBo-Xojt5SZdzGQ11yekA4cpUwy8HT0OIBlQs1Jjr5ijJdYfTCH1G8jJtptdvKfOxd825-z9kRaNm5acAB8Jh281zq7H5y0Gt_f7uVsL-lbl_hs6I3s3-4Y9t4kD5O34kH4bNmuFUDCMm0mUGE38Ss2BA18nwL3rQipYTFYIjE1Z">
+</div>
+</div>
+</header>
+<!-- ==================== PAGE CANVAS ==================== -->
+<div class="flex-1 overflow-y-auto bg-background p-margin-mobile md:p-margin-desktop scroll-smooth">
+<!-- Page Header Container -->
+<div class="max-w-5xl mx-auto w-full mb-lg">
+<div class="flex items-center justify-between mb-xl">
+<div>
+<div class="flex items-center text-outline text-label-sm font-label-sm mb-xs gap-xs">
+<a class="hover:text-primary transition-colors" href="#">Booking</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface">Buat Baru</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Booking Baru</h2>
+</div>
+<!-- Top Action / Cancel -->
+<button class="text-on-surface-variant font-label-sm text-label-sm px-md py-sm rounded-lg hover:bg-surface-container-highest transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                        Batal
+                    </button>
+</div>
+<!-- STEPPER COMPONENT -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-md border border-outline-variant mb-xl shadow-sm">
+<div class="flex items-center justify-between relative">
+<!-- Connecting Line Background -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container-highest rounded-full z-0"></div>
+<!-- Connecting Line Progress (0% since step 1) -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-[10%] h-1 bg-primary rounded-full z-0 transition-all duration-500"></div>
+<!-- Step 1: Pelanggan (Active) -->
+<div class="relative z-10 flex flex-col items-center gap-sm bg-surface-container-lowest px-sm">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm shadow-md ring-4 ring-primary/20">
+                                1
+                            </div>
+<span class="font-label-sm text-label-sm text-primary">Pelanggan</span>
+</div>
+<!-- Step 2: Kendaraan -->
+<div class="relative z-10 flex flex-col items-center gap-sm bg-surface-container-lowest px-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-outline-variant text-outline flex items-center justify-center font-label-sm">
+                                2
+                            </div>
+<span class="font-label-sm text-label-sm text-outline">Kendaraan</span>
+</div>
+<!-- Step 3: Layanan -->
+<div class="relative z-10 flex flex-col items-center gap-sm bg-surface-container-lowest px-sm hidden sm:flex">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-outline-variant text-outline flex items-center justify-center font-label-sm">
+                                3
+                            </div>
+<span class="font-label-sm text-label-sm text-outline">Layanan</span>
+</div>
+<!-- Step 4: Jadwal -->
+<div class="relative z-10 flex flex-col items-center gap-sm bg-surface-container-lowest px-sm hidden sm:flex">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-outline-variant text-outline flex items-center justify-center font-label-sm">
+                                4
+                            </div>
+<span class="font-label-sm text-label-sm text-outline">Jadwal</span>
+</div>
+<!-- Step 5: Konfirmasi -->
+<div class="relative z-10 flex flex-col items-center gap-sm bg-surface-container-lowest px-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-outline-variant text-outline flex items-center justify-center font-label-sm">
+                                5
+                            </div>
+<span class="font-label-sm text-label-sm text-outline hidden sm:block">Konfirmasi</span>
+</div>
+</div>
+</div>
+<!-- MAIN WORKSPACE -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Main Interaction Area (Left 2/3) -->
+<div class="lg:col-span-2 space-y-md">
+<!-- Search & Add Section -->
+<div class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-sm flex flex-col sm:flex-row gap-md items-start sm:items-center">
+<!-- Search Input -->
+<div class="flex-1 relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-[40px] pr-md py-sm font-body-md text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Cari nama, no. HP, atau plat nomor..." type="text" value="Pratama">
+</div>
+<div class="text-on-surface-variant font-label-sm flex-shrink-0 text-center w-full sm:w-auto">atau</div>
+<!-- Add New Button -->
+<button class="w-full sm:w-auto bg-surface-container-lowest text-primary border border-primary hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors font-label-sm text-label-sm px-md py-sm rounded-lg flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+                                Tambah Baru
+                            </button>
+</div>
+<!-- Search Results / Selection State -->
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-md px-xs uppercase tracking-wider">Hasil Pencarian (2)</h3>
+<div class="space-y-sm">
+<!-- Result Card 1 (SELECTED STATE) -->
+<div class="group relative bg-primary-container/10 border-2 border-primary rounded-xl p-md cursor-pointer hover:shadow-sm transition-all overflow-hidden flex items-start gap-md">
+<!-- Selected Indicator -->
+<div class="absolute top-0 right-0 bg-primary text-on-primary rounded-bl-lg px-xs py-xs flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<!-- Avatar -->
+<div class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-md shrink-0">
+                                        AP
+                                    </div>
+<!-- Info -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-xs">
+<h4 class="font-headline-md text-headline-md text-on-surface truncate pr-xl">Andi Pratama</h4>
+<span class="bg-surface-container-highest text-on-surface-variant font-metadata px-sm py-[2px] rounded-full hidden sm:inline-block">Member VIP</span>
+</div>
+<div class="flex flex-wrap gap-x-lg gap-y-xs font-body-md text-body-md text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">call</span>
+                                                0812-3456-7890
+                                            </div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">two_wheeler</span>
+                                                2 Kendaraan terdaftar
+                                            </div>
+</div>
+<div class="mt-md pt-sm border-t border-outline-variant/30 flex items-center gap-xs font-metadata text-outline">
+<span class="material-symbols-outlined text-[14px]">history</span>
+                                            Terakhir servis: 15 Mei 2026 (Honda Beat)
+                                        </div>
+</div>
+</div>
+<!-- Result Card 2 (UNSELECTED STATE) -->
+<div class="group bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-xl p-md cursor-pointer hover:shadow-sm hover:bg-surface-container-low transition-all flex items-start gap-md">
+<!-- Avatar -->
+<div class="w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-headline-md shrink-0">
+                                        RS
+                                    </div>
+<!-- Info -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-xs">
+<h4 class="font-headline-md text-headline-md text-on-surface truncate">Rama Saputra</h4>
+</div>
+<div class="flex flex-wrap gap-x-lg gap-y-xs font-body-md text-body-md text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">call</span>
+                                                0857-9876-5432
+                                            </div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">two_wheeler</span>
+                                                1 Kendaraan terdaftar
+                                            </div>
+</div>
+<div class="mt-md pt-sm border-t border-outline-variant/30 flex items-center gap-xs font-metadata text-outline">
+<span class="material-symbols-outlined text-[14px]">history</span>
+                                            Terakhir servis: 10 Jan 2026 (Yamaha NMAX)
+                                        </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Contextual Summary Panel (Right 1/3) -->
+<div class="lg:col-span-1">
+<!-- Glassmorphism summary card indicating premium feel -->
+<div class="sticky top-xl bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant rounded-xl p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md pb-xs border-b border-outline-variant">Ringkasan Booking</h3>
+<!-- Contextual Content based on selection -->
+<div class="space-y-md">
+<!-- Customer Section (Filled) -->
+<div>
+<span class="font-metadata text-metadata text-outline uppercase tracking-wider block mb-xs">Pelanggan Terpilih</span>
+<div class="bg-surface-container-low p-sm rounded-lg border border-outline-variant/50 flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div class="min-w-0">
+<p class="font-body-md text-body-md font-semibold text-on-surface truncate">Andi Pratama</p>
+<p class="font-metadata text-metadata text-on-surface-variant">0812-3456-7890</p>
+</div>
+</div>
+</div>
+<!-- Pending Sections -->
+<div>
+<span class="font-metadata text-metadata text-outline uppercase tracking-wider block mb-xs">Kendaraan &amp; Layanan</span>
+<div class="bg-transparent border border-dashed border-outline-variant p-sm rounded-lg flex items-center gap-sm opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">two_wheeler</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline italic">Belum dipilih</p>
+</div>
+</div>
+<div>
+<span class="font-metadata text-metadata text-outline uppercase tracking-wider block mb-xs">Jadwal Kedatangan</span>
+<div class="bg-transparent border border-dashed border-outline-variant p-sm rounded-lg flex items-center gap-sm opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline italic">Belum dijadwalkan</p>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<div class="mt-xl pt-md border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary hover:bg-surface-tint active:scale-95 transition-all duration-200 rounded-lg py-md font-label-sm text-label-sm flex items-center justify-center gap-sm shadow-md">
+                                    Lanjut ke Kendaraan
+                                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<p class="text-center font-metadata text-metadata text-outline mt-sm">Pastikan data pelanggan sesuai sebelum melanjutkan.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom spacing -->
+<div class="h-12"></div>
+</div>
+</main>
+</body></html>

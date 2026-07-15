@@ -2,6 +2,7 @@ import { handleAdmin } from "./routes/admin.js";
 import { handleAuth } from "./routes/auth.js";
 import { handleDashboard } from "./routes/dashboard.js";
 import { handleHealth } from "./routes/health.js";
+import { handleApp } from "./routes/app.js";
 import { RateLimitDO } from "./durable/RateLimitDO.js";
 import { SessionGuardDO } from "./durable/SessionGuardDO.js";
 import { cleanupExpiredOtp } from "./db/otpChallenges.js";
@@ -19,6 +20,8 @@ async function route(request, env, ctx, request_id) {
 	if (request.method === "GET" && parts[0] === "dashboard") return handleDashboard();
 	if (parts[0] === "auth") return handleAuth(request, env, ctx, request_id, parts);
 	if (parts[0] === "admin") return handleAdmin(request, env, ctx, request_id, parts);
+	if (parts[0] === "api" && parts[1] === "v1") return handleApp(request, env, ctx, request_id, parts);
+	if (parts[0] === "files") return handleApp(request, env, ctx, request_id, parts);
 	return notFound(request_id);
 }
 
@@ -29,6 +32,14 @@ export default {
 		try {
 			return applyCors(await route(request, env, ctx, request_id), request, env);
 		} catch (error) {
+			console.error(JSON.stringify({
+				event: "request_failed",
+				request_id,
+				method: request.method,
+				path: new URL(request.url).pathname,
+				code: error?.code || "internal_error",
+				status: Number(error?.status || 500),
+			}));
 			return applyCors(errorResponse(error, request_id), request, env);
 		}
 	},

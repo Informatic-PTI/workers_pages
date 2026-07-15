@@ -1,0 +1,16 @@
+apex_workshop/
+booking_baru_desktop/
+booking_service_normalized/
+dashboard_operasional_normalized/
+detail_kendaraan_desktop/
+detail_service_order_normalized/
+detail_sparepart_normalized/
+kasir_pos_normalized/
+laporan_analitik_normalized/
+login_ke_sistem_normalized/
+manajemen_pelanggan_desktop/
+manajemen_sparepart_normalized/
+pekerjaan_saya_mekanik_normalized/
+pembayaran_qris_normalized/
+pusat_notifikasi_desktop/
+tambah_stok_masuk_normalized/

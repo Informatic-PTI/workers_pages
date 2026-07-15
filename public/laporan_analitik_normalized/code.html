@@ -1,0 +1,587 @@
+<!DOCTYPE html><html class="light" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Laporan &amp; Analitik - Irwan Motor</title>
+<!-- Google Fonts & Material Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Brand Anchors -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-tint": "#0053db",
+                        "surface-dim": "#d8dadc",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-fixed": "#ffddb8",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#006242",
+                        "on-tertiary-fixed": "#002113",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e3e5",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#00174b",
+                        "tertiary-container": "#007d55",
+                        "secondary-container": "#fea619",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-surface": "#191c1e",
+                        "secondary": "#855300",
+                        "surface-container": "#eceef0",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "primary": "#004ac6",
+                        "on-tertiary-container": "#bdffdb",
+                        "on-primary-container": "#eeefff",
+                        "on-secondary-container": "#684000",
+                        "primary-fixed": "#dbe1ff",
+                        "inverse-surface": "#2d3133",
+                        "outline-variant": "#c3c6d7",
+                        "outline": "#737686",
+                        "background": "#f7f9fb",
+                        "primary-container": "#2563eb",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "inverse-primary": "#b4c5ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-secondary-fixed": "#2a1700",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e6e8ea",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-background": "#191c1e",
+                        "primary-fixed-dim": "#b4c5ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xxl": "48px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "metadata": ["Inter"],
+                        "display-kpi": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "metadata": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+                        "display-kpi": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Hide scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #c3c6d7;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen">
+<!-- JSON Component: SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-md bg-surface-container-lowest h-screen w-64 border-r border-outline-variant z-20">
+<!-- Brand Area -->
+<div class="px-md pb-lg mb-sm border-b border-outline-variant">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Irwan Motor</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Workshop Management</p>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto px-sm py-sm space-y-1">
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">calendar_today</span>
+<span class="font-label-sm text-label-sm">Booking</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">build</span>
+<span class="font-label-sm text-label-sm">Service Order</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">groups</span>
+<span class="font-label-sm text-label-sm">Customers</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">motorcycle</span>
+<span class="font-label-sm text-label-sm">Vehicles</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">engineering</span>
+<span class="font-label-sm text-label-sm">Mechanics</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">settings_input_component</span>
+<span class="font-label-sm text-label-sm">Spare Parts</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">inventory_2</span>
+<span class="font-label-sm text-label-sm">Inventory</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">payments</span>
+<span class="font-label-sm text-label-sm">Cashier</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">receipt_long</span>
+<span class="font-label-sm text-label-sm">Transactions</span>
+</a>
+<!-- ACTIVE TAB: Reports (Based on intent of Laporan & Analitik) -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg bg-primary/5 text-primary font-bold border-r-4 border-primary shadow-[inset_0_0_0_1px_rgba(0,74,198,0.1)] scale-95 duration-150" href="#">
+<span class="material-symbols-outlined icon-fill text-[20px]">assessment</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">history</span>
+<span class="font-label-sm text-label-sm">Activity Logs</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">notifications</span>
+<span class="font-label-sm text-label-sm">Notifications</span>
+</a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-3 px-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group mt-md" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- JSON Component: TopAppBar -->
+<header class="flex justify-between items-center h-16 w-full pl-72 pr-md bg-surface-bright/80 backdrop-blur-md border-b border-outline-variant shadow-sm fixed top-0 z-10 transition-all opacity-100 hover:opacity-100">
+<!-- Search Bar (on_left) -->
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Cari laporan, transaksi, atau pelanggan..." type="text">
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors relative">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 bg-error rounded-full border border-surface-container-lowest"></span>
+</button>
+<div class="w-px h-8 bg-outline-variant mx-2"></div>
+<button class="px-4 py-2 bg-primary-container text-on-primary rounded-[10px] font-label-sm text-label-sm hover:bg-primary-container/90 shadow-sm transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Quick Create
+            </button>
+<button class="ml-2 w-10 h-10 rounded-full overflow-hidden border border-outline-variant focus:ring-2 focus:ring-primary focus:outline-none">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a workshop manager, male, mid-30s, wearing a clean dark blue uniform shirt, bright neutral office background, well-lit, corporate portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3R8ueWdf5TkR6LxHDCDagIshTFWKqAvxnvKvU4i-HnJQThfOs43vLl3Idw1rbSmM7-2m75i28yoK_w88J9n9sfhY87SjnQpabTieiOQjf_Iei_A1ZlruzSyxSBuIF-5qV0b4iLja1wQnrqMbXbiZrvIQF7lDpgdq5rX6W9DdACvmm4X-_zt3EZgY5zuQJtcelz6XLOQoyf6v2Pdf8iAG2SwVGfG8bs5G8Yhz4JLIJbCHKl1XlMvdkMB9Ir0NhYaGXbQ1ZJDm3h4Ex">
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="p-margin-desktop max-w-[1600px] mx-auto">
+<!-- Page Header & Global Filters -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-lg gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Laporan &amp; Analitik</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Ringkasan performa dan metrik operasional bengkel.</p>
+</div>
+<!-- Period Filter -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg p-1 shadow-sm">
+<button class="px-3 py-1.5 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors">Hari Ini</button>
+<button class="px-3 py-1.5 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors">7 Hari</button>
+<button class="px-3 py-1.5 rounded-md bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors">30 Hari</button>
+<button class="px-3 py-1.5 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors">Bulan Ini</button>
+<div class="w-px h-4 bg-outline-variant mx-1"></div>
+<button class="px-2 py-1.5 rounded-md text-on-surface-variant hover:bg-surface-container-low transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span class="font-label-sm text-label-sm">Custom</span>
+</button>
+</div>
+</div>
+<!-- High-Density KPI Grid -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-gutter mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all group flex flex-col justify-between h-full">
+<div class="flex justify-between items-start mb-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Pendapatan Kotor</p>
+<div class="w-8 h-8 rounded-full bg-tertiary-container/10 flex items-center justify-center text-tertiary-container">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1 truncate">Rp 128.4m</h3>
+<div class="flex items-center gap-1 text-tertiary-container">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-metadata text-metadata">+12.4% <span class="text-on-surface-variant">vs bulan lalu</span></span>
+</div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all flex flex-col justify-between h-full">
+<div class="flex justify-between items-start mb-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Total Transaksi</p>
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">426</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container">arrow_upward</span>
+<span class="font-metadata text-metadata">+4.2%</span>
+</div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all flex flex-col justify-between h-full">
+<div class="flex justify-between items-start mb-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Rata-rata Trx</p>
+<div class="w-8 h-8 rounded-full bg-secondary-container/10 flex items-center justify-center text-secondary-container">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1 truncate">Rp 301.5k</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container">arrow_upward</span>
+<span class="font-metadata text-metadata">+8.1%</span>
+</div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all flex flex-col justify-between h-full">
+<div class="flex justify-between items-start mb-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Service Selesai</p>
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">build_circle</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">382</h3>
+<div class="flex items-center gap-1 text-tertiary-container">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-metadata text-metadata">94.8% <span class="text-on-surface-variant">tepat waktu</span></span>
+</div>
+</div>
+</div>
+<!-- KPI 5 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all flex flex-col justify-between h-full">
+<div class="flex justify-between items-start mb-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Plg. Dilayani</p>
+<div class="w-8 h-8 rounded-full bg-surface-tint/10 flex items-center justify-center text-surface-tint">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">336</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container">arrow_upward</span>
+<span class="font-metadata text-metadata">+12 Baru</span>
+</div>
+</div>
+</div>
+<!-- KPI 6 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all flex flex-col justify-between h-full">
+<div class="flex justify-between items-start mb-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">Avg. Durasi</p>
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">1j 34m</h3>
+<div class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+<span class="font-metadata text-metadata">-4m <span class="text-on-surface-variant">lebih cepat</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-lg">
+<!-- Tren Pendapatan Chart (Col Span 8) -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col relative overflow-hidden">
+<div class="flex justify-between items-start mb-6 z-10">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Tren Pendapatan &amp; Volume</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Korelasi nilai transaksi harian vs jumlah service.</p>
+</div>
+<button class="w-8 h-8 rounded hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Simulated Line Chart Area -->
+<div class="flex-1 relative min-h-[280px] w-full flex items-end">
+<!-- Y-Axis Labels -->
+<div class="absolute left-0 top-0 bottom-8 w-12 flex flex-col justify-between text-right pr-2">
+<span class="font-metadata text-metadata text-outline">6M</span>
+<span class="font-metadata text-metadata text-outline">4M</span>
+<span class="font-metadata text-metadata text-outline">2M</span>
+<span class="font-metadata text-metadata text-outline">0</span>
+</div>
+<!-- Chart Grid & Paths -->
+<div class="ml-12 w-full h-full relative border-l border-b border-outline-variant/30 flex flex-col justify-between pb-8">
+<!-- Grid lines -->
+<div class="w-full border-t border-outline-variant/20 absolute top-[0%]"></div>
+<div class="w-full border-t border-outline-variant/20 absolute top-[33.3%]"></div>
+<div class="w-full border-t border-outline-variant/20 absolute top-[66.6%]"></div>
+<!-- SVG Line representation -->
+<svg class="absolute inset-0 w-full h-full pb-8" preserveAspectRatio="none" viewBox="0 0 100 100">
+<!-- Area gradient defs -->
+<defs>
+<linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#004ac6" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#004ac6" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<!-- Revenue Area -->
+<path d="M0,80 Q10,70 20,75 T40,60 T60,65 T80,40 T100,50 L100,100 L0,100 Z" fill="url(#areaGradient)"></path>
+<!-- Revenue Line -->
+<path d="M0,80 Q10,70 20,75 T40,60 T60,65 T80,40 T100,50" fill="none" stroke="#004ac6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Volume Line (Secondary) -->
+<path d="M0,90 L10,85 L20,88 L30,75 L40,80 L50,70 L60,78 L70,60 L80,50 L90,65 L100,55" fill="none" stroke="#fea619" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Data points -->
+<circle cx="80" cy="40" fill="#ffffff" r="3" stroke="#004ac6" stroke-width="2"></circle>
+</svg>
+<!-- Tooltip mock -->
+<div class="absolute left-[75%] top-[25%] bg-inverse-surface text-inverse-on-surface p-2 rounded text-xs shadow-lg whitespace-nowrap z-20 font-body-md text-metadata">
+<div class="font-bold">24 Okt 2023</div>
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span> Pendapatan: Rp 5.2M</div>
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary-container"></span> Volume: 21 Transaksi</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-0 left-0 w-full flex justify-between px-2 pt-2">
+<span class="font-metadata text-metadata text-outline">1 Okt</span>
+<span class="font-metadata text-metadata text-outline">8 Okt</span>
+<span class="font-metadata text-metadata text-outline">15 Okt</span>
+<span class="font-metadata text-metadata text-outline">22 Okt</span>
+<span class="font-metadata text-metadata text-outline">30 Okt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Komposisi Pendapatan (Col Span 4) -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Komposisi Pendapatan</h3>
+<div class="flex-1 flex flex-col justify-center items-center relative py-4">
+<!-- Simulated Donut Chart using CSS conic-gradient -->
+<div class="w-48 h-48 rounded-full relative flex items-center justify-center" style="background: conic-gradient(#004ac6 0% 58.9%, #fea619 58.9% 100%);">
+<!-- Inner circle for Donut effect -->
+<div class="w-36 h-36 bg-surface-container-lowest rounded-full flex flex-col items-center justify-center shadow-inner">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface">100%</span>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="mt-6 space-y-3">
+<div class="flex items-center justify-between p-2 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-sm bg-primary"></div>
+<span class="font-body-md text-body-md text-on-surface">Penjualan Sparepart</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface block">58.9%</span>
+<span class="font-metadata text-metadata text-on-surface-variant">Rp 75.6m</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-sm bg-secondary-container"></div>
+<span class="font-body-md text-body-md text-on-surface">Jasa Service</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface block">41.1%</span>
+<span class="font-metadata text-metadata text-on-surface-variant">Rp 52.8m</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-lg">
+<!-- Volume Service Chart (Col Span 6) -->
+<div class="lg:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Volume Service per Hari</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Distribusi beban kerja bengkel (Minggu ini vs Minggu lalu).</p>
+<div class="flex-1 flex items-end justify-between h-48 pt-4 border-b border-outline-variant/30">
+<!-- Bar Groups (Mock) -->
+<div class="w-full flex justify-around items-end h-full px-2">
+<!-- Mon -->
+<div class="flex items-end gap-1 h-full pb-2">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 40%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 60%"></div>
+</div>
+<!-- Tue -->
+<div class="flex items-end gap-1 h-full pb-2">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 55%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 45%"></div>
+</div>
+<!-- Wed -->
+<div class="flex items-end gap-1 h-full pb-2 relative group">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 70%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 85%"></div>
+<!-- Tooltip -->
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Rabu: 32 vs 26</div>
+</div>
+<!-- Thu -->
+<div class="flex items-end gap-1 h-full pb-2">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 65%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 75%"></div>
+</div>
+<!-- Fri -->
+<div class="flex items-end gap-1 h-full pb-2">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 80%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 95%"></div>
+</div>
+<!-- Sat -->
+<div class="flex items-end gap-1 h-full pb-2">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 90%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 100%"></div>
+</div>
+<!-- Sun -->
+<div class="flex items-end gap-1 h-full pb-2">
+<div class="w-4 bg-outline-variant rounded-t-sm" style="height: 30%"></div>
+<div class="w-4 bg-primary rounded-t-sm" style="height: 25%"></div>
+</div>
+</div>
+</div>
+<!-- X-Axis -->
+<div class="flex justify-around items-center pt-2 px-2 text-outline">
+<span class="font-metadata text-metadata">Sen</span>
+<span class="font-metadata text-metadata">Sel</span>
+<span class="font-metadata text-metadata">Rab</span>
+<span class="font-metadata text-metadata">Kam</span>
+<span class="font-metadata text-metadata">Jum</span>
+<span class="font-metadata text-metadata">Sab</span>
+<span class="font-metadata text-metadata">Min</span>
+</div>
+<!-- Bar Legend -->
+<div class="flex justify-center gap-4 mt-4">
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-primary rounded-sm"></div><span class="font-label-sm text-label-sm text-on-surface-variant">Minggu Ini</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-outline-variant rounded-sm"></div><span class="font-label-sm text-label-sm text-on-surface-variant">Minggu Lalu</span></div>
+</div>
+</div>
+<!-- Kategori Service Teratas (Col Span 6) -->
+<div class="lg:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Kategori Service Teratas</h3>
+<button class="font-label-sm text-label-sm text-primary hover:text-primary-fixed-dim transition-colors">Lihat Semua</button>
+</div>
+<div class="space-y-5 flex-1">
+<!-- Item 1 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1.5">
+<span class="text-on-surface">Service Ringan (Tune Up)</span>
+<span class="text-on-surface-variant">145 unit</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1.5">
+<span class="text-on-surface">Ganti Oli Mesin &amp; Gardan</span>
+<span class="text-on-surface-variant">120 unit</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 70%"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1.5">
+<span class="text-on-surface">Service CVT</span>
+<span class="text-on-surface-variant">88 unit</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 55%"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1.5">
+<span class="text-on-surface">Ganti Kanvas Rem</span>
+<span class="text-on-surface-variant">64 unit</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 40%"></div>
+</div>
+</div>
+<!-- Item 5 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1.5">
+<span class="text-on-surface">Turun Mesin (Overhaul)</span>
+<span class="text-on-surface-variant">12 unit</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

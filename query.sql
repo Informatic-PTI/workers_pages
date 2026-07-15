@@ -1,0 +1,1 @@
+update user_auth_settings set skip_otp = 1 where user_id = 'ATHTHAA'

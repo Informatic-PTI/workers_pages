@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Manajemen Sparepart - Irwan Motor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "surface-bright": "#f7f9fb",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#2a1700",
+                    "outline": "#737686",
+                    "tertiary": "#006242",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#6ffbbe",
+                    "primary": "#004ac6",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "primary-fixed": "#dbe1ff",
+                    "inverse-surface": "#2d3133",
+                    "surface": "#f7f9fb",
+                    "tertiary-container": "#007d55",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "background": "#f7f9fb",
+                    "on-surface": "#191c1e",
+                    "on-primary-container": "#eeefff",
+                    "surface-tint": "#0053db",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "secondary": "#855300",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container": "#eceef0",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "secondary-container": "#fea619",
+                    "primary-container": "#2563eb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#bdffdb",
+                    "surface-dim": "#d8dadc",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#684000",
+                    "secondary-fixed": "#ffddb8",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-low": "#f2f4f6",
+                    "outline-variant": "#c3c6d7",
+                    "surface-variant": "#e0e3e5",
+                    "inverse-primary": "#b4c5ff",
+                    "on-tertiary-fixed": "#002113",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-background": "#191c1e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "base": "8px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "xxl": "48px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Inter"
+                    ],
+                    "display-kpi": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "metadata": [
+                            "Inter"
+                    ],
+                    "label-sm": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-kpi": [
+                            "36px",
+                            {
+                                    "lineHeight": "44px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "metadata": [
+                            "11px",
+                            {
+                                    "lineHeight": "14px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .standard-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="w-64 h-screen fixed left-0 top-0 hidden lg:flex flex-col border-r border-outline-variant dark:border-outline shadow-sm bg-surface-container-lowest dark:bg-surface-dim z-50">
+<div class="flex flex-col h-full py-6 px-4 overflow-y-auto">
+<div class="mb-8 px-4 flex items-center gap-4">
+<img class="w-10 h-10 object-contain rounded-md" data-alt="A modern, minimalist logo for an automotive motorcycle workshop named Irwan Motor. Clean lines, deep blue and slate grey colors, conveying professionalism and engineering precision on a solid white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_FGlkSrZEX6UNhjGkEDCErMcpm_eP2tLsqp1Ci_QcQz66okY84TbcoJgHNpNSyyeki8aAqEISqPgDi_yncEYgk8GN1NNhZQfabupdgYzIuBXXsiHXzB3RXBda_nP89n99vQU8tGvIGldzFDs3OEA51GgipXMbgip60YkPRKdXXC4jzLZmlCRauZb5HwRauV32unrW_eswAj1aHMtZ64tfIYCfkBdqmqCnSagSzfqwpkd3FML18ribcexzlztpqHtn0lIXCrHxrQFz">
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Irwan Motor</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Workshop Management</p>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary font-label-sm text-label-sm py-2 px-4 rounded-[10px] mb-6 hover:bg-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">add</span>
+                New Service
+            </button>
+<ul class="space-y-1"><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">dashboard</span><span class="font-label-sm text-label-sm">Dashboard</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">calendar_today</span><span class="font-label-sm text-label-sm">Booking</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">build</span><span class="font-label-sm text-label-sm">Service Order</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">group</span><span class="font-label-sm text-label-sm">Pelanggan</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">motorcycle</span><span class="font-label-sm text-label-sm">Kendaraan</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">engineering</span><span class="font-label-sm text-label-sm">Mekanik</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary-fixed rounded-lg font-bold transition-all" href="#"><span class="material-symbols-outlined">settings_suggest</span><span class="font-label-sm text-label-sm">Spare Parts</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">inventory_2</span><span class="font-label-sm text-label-sm">Inventori</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">point_of_sale</span><span class="font-label-sm text-label-sm">Kasir</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">receipt_long</span><span class="font-label-sm text-label-sm">Transaksi</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">assessment</span><span class="font-label-sm text-label-sm">Laporan</span></a></li><li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all rounded-lg" href="#"><span class="material-symbols-outlined">history</span><span class="font-label-sm text-label-sm">Log Aktivitas</span></a></li></ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 lg:ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="h-16 sticky top-0 z-40 w-full border-b border-outline-variant dark:border-outline shadow-sm bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex items-center justify-between px-margin-mobile lg:px-margin-desktop">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary lg:hidden">Irwan Motor</span>
+<div class="hidden lg:flex items-center bg-surface-container-lowest border border-outline-variant rounded-[10px] px-3 py-1 focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md w-64 text-on-surface outline-none" placeholder="Cari service order, pelanggan, kendaraan, atau sparepart..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-2"><button class="bg-primary-container text-on-primary font-label-sm text-label-sm py-1.5 px-4 rounded-[10px] hidden sm:block hover:bg-primary transition-colors">Buat Cepat</button><button class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full p-2 transition-colors text-on-surface-variant"><span class="material-symbols-outlined">notifications</span></button><button class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full p-2 transition-colors text-on-surface-variant"><span class="material-symbols-outlined">help</span></button><img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover ml-2 border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDswC_bPoiIJ02Dna5ufljWvRhQFTZTmvw8uKrURD_PCv0n9GKEk4Ql546SMBWaHgGy9kMoLQocmyEAWW1-qnrEUGEtu6kNnpjuiYEwi-sAttLtc7aiCBCjNYRx1Bw7jXY6bn6bHEEs-97X-q1ubQNbMPASSdfqBT0iNhOPe8EK1YgAVI9Ul7R6w9BS3ta3BqkzHHRigans2UHuDY7YUCVHwNOuyDDY67KtL4-62lW9CqSumCnEgDuwsFm4Pm7kMky1kPo_2i63wlgG"></div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-margin-mobile lg:p-margin-desktop space-y-lg overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background mb-1">Manajemen Sparepart</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola sparepart, stok, dan pergerakan inventori bengkel</p>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-4 py-2 border border-outline-variant text-on-surface bg-surface-container-lowest rounded-[10px] font-label-sm text-label-sm hover:bg-surface-container transition-colors">Stok Masuk</button>
+<button class="px-4 py-2 border border-outline-variant text-on-surface bg-surface-container-lowest rounded-[10px] font-label-sm text-label-sm hover:bg-surface-container transition-colors">Stok Keluar</button>
+<button class="px-4 py-2 border border-outline-variant text-on-surface bg-surface-container-lowest rounded-[10px] font-label-sm text-label-sm hover:bg-surface-container transition-colors">Penyesuaian Stok</button>
+<button class="px-4 py-2 bg-primary-container text-on-primary rounded-[10px] font-label-sm text-label-sm hover:bg-primary transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span> Tambah Sparepart
+                    </button>
+</div>
+</div>
+<!-- Bento Grid KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card rounded-xl p-lg relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Sparepart</h3>
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-1.5 rounded-lg">inventory</span>
+</div>
+<div class="font-display-kpi text-display-kpi text-on-surface mb-1">248<span class="font-body-md text-body-md text-on-surface-variant ml-1 font-normal">SKU</span></div>
+<p class="font-metadata text-metadata text-on-surface-variant">32 kategori aktif</p>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[100px]">inventory</span>
+</div>
+</div>
+<div class="glass-card rounded-xl p-lg relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Nilai Inventori</h3>
+<span class="material-symbols-outlined text-tertiary bg-tertiary-fixed p-1.5 rounded-lg">payments</span>
+</div>
+<div class="font-display-kpi text-display-kpi text-on-surface mb-1 text-[28px] md:text-[24px] lg:text-[28px] truncate">Rp 86.450.000</div>
+<p class="font-metadata text-metadata text-on-surface-variant">Berdasarkan harga beli</p>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity text-tertiary">
+<span class="material-symbols-outlined text-[100px]">account_balance_wallet</span>
+</div>
+</div>
+<div class="glass-card rounded-xl p-lg border-l-4 border-l-secondary-container relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Stok Rendah</h3>
+<span class="material-symbols-outlined text-secondary-container bg-secondary-fixed p-1.5 rounded-lg">warning</span>
+</div>
+<div class="font-display-kpi text-display-kpi text-on-surface mb-1">12</div>
+<p class="font-metadata text-metadata text-secondary-container font-medium">Perlu segera ditambah</p>
+</div>
+<div class="glass-card rounded-xl p-lg border-l-4 border-l-error relative overflow-hidden bg-error-container/20">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Stok Kritis &amp; Habis</h3>
+<span class="material-symbols-outlined text-error bg-error-container p-1.5 rounded-lg">dangerous</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-display-kpi text-display-kpi text-error">4</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Kritis</span>
+<span class="text-outline-variant">|</span>
+<span class="font-display-kpi text-display-kpi text-error">3</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Habis</span>
+</div>
+<p class="font-metadata text-metadata text-error font-medium">Di bawah batas kritis / Tidak tersedia</p>
+</div>
+</div>
+<!-- Main Content Layout (Asymmetric) -->
+<div class="flex flex-col lg:flex-row gap-gutter items-start">
+<!-- Inventory Table Section (Takes up more space) -->
+<div class="standard-card rounded-xl w-full lg:w-3/4 flex flex-col">
+<!-- Table Header & Controls -->
+<div class="p-md border-b border-outline-variant flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-bright rounded-t-xl">
+<!-- Tabs -->
+<div class="flex space-x-1 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+<button class="px-3 py-1.5 bg-primary-container text-on-primary font-label-sm text-label-sm rounded-lg whitespace-nowrap">Semua</button>
+<button class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm rounded-lg whitespace-nowrap transition-colors">Aman</button>
+<button class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm rounded-lg whitespace-nowrap transition-colors">Stok Rendah</button>
+<button class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm rounded-lg whitespace-nowrap transition-colors">Kritis</button>
+<button class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm rounded-lg whitespace-nowrap transition-colors">Habis</button>
+</div>
+<!-- Search -->
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-[10px] font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Cari nama atau SKU..." type="text">
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant"><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Sparepart</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">SKU</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Kategori</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Harga Jual</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Stok</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Minimum</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Lokasi</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold">Status</th><th class="p-md font-label-sm text-label-sm text-on-surface-variant font-semibold text-right">Actions</th></tr>
+</thead>
+<tbody class="divide-y divide-outline-variant bg-surface-container-lowest">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-bright transition-colors group"><td class="p-md"><div class="font-body-md text-body-md text-on-surface font-medium">Federal Ultratec 10W-40</div></td><td class="p-md"><div class="font-metadata text-metadata text-outline font-mono">OLI-FDR-ULT-01</div></td><td class="p-md"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-metadata text-metadata">Oli Mesin</span></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">Rp 65.000</div></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">24 unit</div></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">10</div></td><td class="p-md"><div class="font-metadata text-metadata text-outline">Rak A-01</div></td><td class="p-md"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#E6F4EA] text-[#137333] font-label-sm text-label-sm"><div class="w-1.5 h-1.5 rounded-full bg-[#137333]"></div> Aman</span></td><td class="p-md text-right"><button class="px-3 py-1 bg-primary-container text-on-primary rounded-md font-label-sm text-label-sm hover:bg-primary transition-colors">Lihat Detail</button><button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td></tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-bright transition-colors group bg-error-container/5 border-l-2 border-l-error"><td class="p-md"><div class="font-body-md text-body-md text-on-surface font-medium">Kampas Rem Depan Vario</div></td><td class="p-md"><div class="font-metadata text-metadata text-outline font-mono">BRK-HND-VAR-F01</div></td><td class="p-md"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-metadata text-metadata">Sistem Rem</span></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">Rp 85.000</div></td><td class="p-md"><div class="font-body-md text-body-md text-error font-bold">2 unit</div></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">8</div></td><td class="p-md"><div class="font-metadata text-metadata text-outline">Rak B-04</div></td><td class="p-md"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#FCE8E6] text-[#C5221F] font-label-sm text-label-sm"><div class="w-1.5 h-1.5 rounded-full bg-[#C5221F]"></div> Kritis</span></td><td class="p-md text-right"><button class="px-3 py-1 bg-primary-container text-on-primary rounded-md font-label-sm text-label-sm hover:bg-primary transition-colors">Lihat Detail</button><button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td></tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-bright transition-colors group"><td class="p-md"><div class="font-body-md text-body-md text-on-surface font-medium">Busi NGK CPR9EA-9</div></td><td class="p-md"><div class="font-metadata text-metadata text-outline font-mono">IGN-NGK-CPR-09</div></td><td class="p-md"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-metadata text-metadata">Pengapian</span></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">Rp 18.000</div></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">15 unit</div></td><td class="p-md"><div class="font-body-md text-body-md text-on-surface">5</div></td><td class="p-md"><div class="font-metadata text-metadata text-outline">Rak D-02</div></td><td class="p-md"><span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#E6F4EA] text-[#137333] font-label-sm text-label-sm"><div class="w-1.5 h-1.5 rounded-full bg-[#137333]"></div> Aman</span></td><td class="p-md text-right"><button class="px-3 py-1 bg-primary-container text-on-primary rounded-md font-label-sm text-label-sm hover:bg-primary transition-colors">Lihat Detail</button><button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></td></tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination (Simplified) -->
+<div class="p-md border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest rounded-b-xl">
+<span class="font-metadata text-metadata text-on-surface-variant">Menampilkan 1-3 dari 248 sparepart</span>
+<div class="flex gap-1">
+<button class="p-1 border border-outline-variant rounded bg-surface-container-low text-outline disabled" disabled=""><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="p-1 border border-outline-variant rounded hover:bg-surface-container text-on-surface transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Alerts / Needs Attention Sidebar -->
+<div class="w-full lg:w-1/4 flex flex-col gap-md">
+<div class="standard-card rounded-xl p-md border-t-4 border-t-secondary-container">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary-container">notification_important</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Perlu Perhatian</h2>
+</div>
+<div class="space-y-3">
+<!-- Alert Item 1 -->
+<div class="p-3 bg-error-container/20 border border-error-container rounded-lg">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Kampas Rem Depan Vario</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-error text-on-error uppercase tracking-wider">Kritis</span>
+</div>
+<div class="font-metadata text-metadata text-on-surface-variant mb-2">SKU: BRK-HND-VAR-F01</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-body-md text-body-md text-error font-bold">2</span>
+<span class="font-metadata text-metadata text-outline">/ Min: 8</span>
+</div>
+<button class="text-primary hover:text-primary-fixed-variant font-label-sm text-label-sm flex items-center gap-1 transition-colors">
+                                        Order <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="p-3 bg-surface-container-high border border-outline-variant rounded-lg">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">V-Belt Yamaha NMAX</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-inverse-surface text-inverse-on-surface uppercase tracking-wider">Habis</span>
+</div>
+<div class="font-metadata text-metadata text-on-surface-variant mb-2">SKU: BLT-YMH-NMX-01</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-body-md text-body-md text-on-surface font-bold">0</span>
+<span class="font-metadata text-metadata text-outline">/ Min: 5</span>
+</div>
+<button class="text-primary hover:text-primary-fixed-variant font-label-sm text-label-sm flex items-center gap-1 transition-colors">
+                                        Order <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

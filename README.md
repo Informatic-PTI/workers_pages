@@ -1,156 +1,200 @@
-# Irwan Motor Auth
+# Bengkel Irwan Motor Management System
 
-Auth Worker untuk tugas kampus `irwanmotor`. Project ini memakai Cloudflare Workers, D1, Durable Objects, Queues, KV, dan R2 untuk password login, OTP WhatsApp, JWT access token, refresh token rotation, session revoke, audit log, backup, dan hyperdashboard.
+Aplikasi manajemen bengkel full-stack berbasis Cloudflare Workers dan Workers Static Assets. Frontend Vanilla JavaScript di `public/` menangani booking, pelanggan, kendaraan, Service Order, pekerjaan mekanik, inventori, kasir, laporan, notifikasi, dan aktivitas. Worker di `src/` menyediakan API yang menggunakan auth lama tanpa mengganti kontrak login, token, refresh token, session, OTP, atau hyperdashboard.
 
-Source referensi production ada di `C:\Users\athth\Documents\project\workers\workers-auth`, tetapi repo itu tidak perlu disentuh.
+## Arsitektur
 
-## Bootstrap Credential
+- `public/index.html`, `public/css/`, `public/js/`: satu SPA ES Modules dengan hash router, shell bersama, navigasi berbasis role, dan API client terpusat.
+- `src/routes/`: pemetaan method/path ke controller.
+- `src/controllers/`: autentikasi/otorisasi, parsing request, dan response HTTP.
+- `src/services/`: aturan domain, workflow, validasi bisnis, konkurensi, dan idempotensi.
+- `src/repositories/`: akses D1, KV, dan R2 melalui binding Worker.
+- `migrations/`: migrasi D1 auth lama dan migrasi domain bengkel yang bersifat aditif.
+- `scripts/`: seed auth, seed bengkel, serta pemeriksaan statis frontend.
+- `test/`: pengujian Worker pada runtime Miniflare/Vitest dengan migrasi D1 nyata.
 
-Credential lokal dan note tim ada di `.var.vir.vur`.
+Workers Static Assets adalah jalur full-stack utama: aset dilayani dari `public/`, sedangkan `/api/*`, `/auth/*`, `/admin/*`, `/health`, `/dashboard`, dan `/files/*` selalu masuk ke Worker. File sumber Stitch mentah dipertahankan secara lokal sebagai bahan referensi, tetapi dikecualikan dari paket aset melalui `public/.assetsignore`.
 
-Hyperuser awal:
+## Cloudflare resources
 
-```text
-id: ATHTHAA
-password: awikwok123
-```
+Binding di `wrangler.jsonc` adalah source of truth:
 
-`ATHTHAA` diseed sebagai `is_hyperuser=1` dan `skip_otp=1` karena belum ada nomor WhatsApp. Setelah masuk dashboard, isi nomor phone lalu ubah `skip_otp=false` kalau ingin login hyperuser memakai OTP.
+| Binding | Resource | Fungsi |
+| --- | --- | --- |
+| `DB`, `AUTH_DB` | D1 `irwanmotor_auth_core` | Sumber kebenaran auth dan data operasional |
+| `CACHE`, `AUTH_CACHE` | KV | Cache agregat singkat serta cache auth lama |
+| `BUCKET` | R2 opsional (belum diaktifkan) | Foto/dokumen; endpoint lampiran mengembalikan `provider_not_configured` selama binding tidak tersedia |
+| `AUTH_RATE_LIMITER`, `AUTH_SESSION_GUARD` | Durable Objects | Rate limit dan session guard auth lama |
+| `OTP_QUEUE`, `AUDIT_QUEUE`, `BACKUP_QUEUE` | Queues | Delivery OTP, audit, dan job backup |
+| `ASSETS` | Workers Static Assets | SPA di `public/` |
 
-## Setup
+`DB` dan `AUTH_DB` sengaja menunjuk database yang sama agar foreign key ke identitas auth tetap valid. Demikian pula `CACHE` dan `AUTH_CACHE` menunjuk namespace yang sama dengan prefix key terpisah. Browser tidak pernah menerima akses binding.
 
-Install dependency:
+Jika resource belum ada, buat lalu salin ID hasilnya ke `wrangler.jsonc`:
 
-```bash
-npm install
-```
-
-Buat resource Cloudflare:
-
-```bash
+```powershell
 npx wrangler d1 create irwanmotor_auth_core
+npx wrangler kv namespace create CACHE
+npx wrangler r2 bucket create irwanmotor-uploads
 npx wrangler queues create irwanmotor-auth-otp
 npx wrangler queues create irwanmotor-auth-audit
 npx wrangler queues create irwanmotor-auth-backup
+npx wrangler types
 ```
 
-KV sudah dikunci ke namespace `irwanmotor-auth-cache`. R2 backup belum aktif karena akun Cloudflare saat ini belum mengaktifkan R2; endpoint backup bisa dipakai setelah R2 diaktifkan dan binding `AUTH_BACKUP_BUCKET` ditambahkan lagi ke `wrangler.jsonc`.
+## Environment dan secrets
 
-Apply schema:
+Secret tidak disimpan di repository. Wrangler membaca `.dev.vars` untuk lokal; file ini sudah diabaikan oleh Git. Gunakan `npx wrangler secret put NAME` untuk remote:
 
-```bash
-npx wrangler d1 migrations apply irwanmotor_auth_core --local
-npx wrangler d1 migrations apply irwanmotor_auth_core --remote
+```text
+JWT_SECRET=<random-secret>
+REFRESH_TOKEN_PEPPER=<random-secret>
+PASSWORD_PEPPER=<random-secret>
+OTP_PEPPER=<random-secret>
+ADMIN_API_TOKEN=<random-secret>
+GOWA_API_TOKEN=<optional-provider-token>
+SEED_HYPERUSER_PASSWORD=<development-only-password>
 ```
 
-Untuk local dev, Wrangler membaca `.dev.vars` atau `.env`, bukan `.var.vir.vur`. Repo ini sudah dibuatkan `.dev.vars` lokal dari secret yang sama, dan file itu di-ignore oleh git.
+Secret inti yang wajib di production:
 
-Set secret Cloudflare:
-
-```bash
+```powershell
 npx wrangler secret put JWT_SECRET
 npx wrangler secret put REFRESH_TOKEN_PEPPER
 npx wrangler secret put PASSWORD_PEPPER
 npx wrangler secret put OTP_PEPPER
 npx wrangler secret put ADMIN_API_TOKEN
-npx wrangler secret put GOWA_API_TOKEN
 ```
 
-Seed database:
+Tambahkan `GOWA_API_TOKEN` dengan `npx wrangler secret put GOWA_API_TOKEN` hanya bila adapter WhatsApp GOWA diaktifkan. Endpoint production saat ini menggunakan `GOWA_API_BASE=https://gowa1.punya.top`; nilainya dapat diubah sebagai variable non-secret. QRIS dan transfer tetap nonaktif sampai adapter settlement riil diimplementasikan; variable/flag saja tidak dianggap sebagai bukti pembayaran.
 
-```bash
-$env:PASSWORD_PEPPER="<PASSWORD_PEPPER>"
-$env:SEED_HYPERUSER_PASSWORD="awikwok123"
+## Instalasi, migrasi, dan seed lokal
+
+Gunakan Node.js versi LTS yang didukung Wrangler:
+
+```powershell
+npm install
+npx wrangler d1 migrations apply irwanmotor_auth_core --local
+```
+
+Seed bersifat eksplisit dan menggunakan `INSERT OR IGNORE`. Perintah seed membaca password dan `PASSWORD_PEPPER` dari `.dev.vars`, bukan dari source:
+
+```powershell
 npm run seed -- --local
-npm run seed
+
+npm run seed:workshop -- --local
+
+npm run seed:super
 ```
 
-## Run
+Seed bengkel membuat data demo yang koheren untuk Admin, mekanik `rizky`, kasir `kasir`, Andi Pratama, Rama Saputra, dua kendaraan, Service Order, spare part, invoice, dan notifikasi. Gunakan password dari `SEED_STAFF_PASSWORD` untuk kedua akun staf. Jangan menjalankan seed remote tanpa meninjau target database dan variable environment.
 
-```bash
-npm test -- --run
-npx wrangler dev
+`npm run seed:super` menambahkan dataset pameran yang jauh lebih lengkap dari `superseed.sql`: 14 pelanggan, 15 kendaraan, booking historis dan mendatang, Service Order pada seluruh tahap workflow, beberapa mekanik, tugas servis, supplier, penerimaan serta movement stok, 20 barang dengan nama produk nyata dan SKU internal demo, invoice, pembayaran tunai, notifikasi, dan audit trail. Kontak memakai domain/nomor fiktif dan SKU tidak diklaim sebagai nomor part OEM. File ini idempotent sehingga aman dijalankan ulang pada database lokal yang sama.
+
+Jika dataset ini memang hendak dipasang pada D1 remote, tinjau isi dan target akun terlebih dahulu lalu jalankan secara eksplisit:
+
+```powershell
+node scripts/seed-super.js --remote
 ```
 
-Dashboard:
+Runner membagi `superseed.sql` menjadi beberapa batch kecil agar tidak melewati batas batch D1/Miniflare. Perintah remote tersebut sengaja tidak dijadikan npm script agar data dummy tidak masuk production tanpa keputusan sadar.
 
-```text
-https://bengkel.irwanmotor.workers.dev/dashboard
+Untuk migrasi remote yang telah ditinjau:
+
+```powershell
+npx wrangler d1 migrations apply irwanmotor_auth_core --remote
 ```
 
-Health:
+## Development dan verifikasi
 
-```text
-GET /health
+Full-stack lokal (frontend dan API pada origin yang sama):
+
+```powershell
+npm run dev
 ```
 
-## Auth API
+Buka `http://127.0.0.1:8787/`. SPA menggunakan route seperti `/#/dashboard`, sedangkan hyperdashboard auth lama tetap ada di `/dashboard`.
 
-Password login:
+Preview Pages statis dapat dipakai untuk memeriksa aset saja:
 
-```bash
-curl.exe -X POST "$BASE/auth/login/password" `
-  -H "Content-Type: application/json" `
-  -d "{\"identifier\":\"ATHTHAA\",\"password\":\"awikwok123\"}"
+```powershell
+npm run dev:pages
 ```
 
-Jika user `skip_otp=false`, response berisi `challenge_id`; lanjut:
+Karena frontend sengaja memakai API relative/same-origin, workflow data lengkap dijalankan dengan `wrangler dev`; preview Pages statis tidak menyediakan API Worker ini.
 
-```bash
-curl.exe -X POST "$BASE/auth/login/verify" `
-  -H "Content-Type: application/json" `
-  -d "{\"challenge_id\":\"otp_xxx\",\"otp\":\"123456\"}"
+Jalankan pemeriksaan:
+
+```powershell
+npm run check:frontend
+npm run test:run
+npm run types
+npx wrangler deploy --dry-run
 ```
 
-Endpoint utama:
+## Auth yang dipertahankan
 
-- `POST /auth/register/password`
-- `POST /auth/register/verify`
-- `POST /auth/login/password`
-- `POST /auth/login/verify`
-- `POST /auth/refresh`
-- `GET /auth/me`
-- `GET /auth/sessions`
-- `POST /auth/logout`
-- `POST /auth/logout-all`
-- `POST /auth/introspect`
-- `POST /auth/require-permission`
-- `GET /admin/users`
-- `POST /admin/seed/initial`
-- `POST /admin/backup/snapshot`
-- `GET /dashboard`
+Frontend mengadaptasi kontrak auth yang sudah ada:
 
-Admin API token memakai bearer token dari `.var.vir.vur`:
+1. `POST /auth/login/password` dengan `{ "identifier", "password" }`.
+2. Jika response berisi `otp_required`, frontend melanjutkan ke `POST /auth/login/verify` dengan `challenge_id` dan OTP.
+3. `access_token` disimpan di `sessionStorage`; refresh token dapat dipertahankan di `localStorage` bila pengguna memilih opsi ingat saya.
+4. Semua API aplikasi mengirim `Authorization: Bearer <ACCESS_TOKEN>`.
+5. `GET /auth/me` tetap kompatibel dan sekarang menambahkan daftar `roles` untuk navigasi Admin, Mechanic, atau Cashier.
+6. Access token kedaluwarsa sesuai konfigurasi lama; API client melakukan satu refresh terkoordinasi melalui `POST /auth/refresh`, lalu menghapus session jika refresh gagal.
 
-```bash
-curl.exe "$BASE/admin/users" -H "Authorization: Bearer <ADMIN_API_TOKEN>"
-```
+Endpoint auth, admin token API, serta hyperdashboard lama tetap didokumentasikan di `collection.md`.
 
-## OTP
+## Role experience dan authorization
 
-OTP memakai `GOWA_API_BASE` dan `GOWA_API_TOKEN`. Default local ada di `wrangler.jsonc`:
+- Admin: seluruh operasi booking, pelanggan, kendaraan, Service Order, inventori, kasir, laporan, aktivitas, dan pengaturan.
+- Mechanic: dashboard, pekerjaan yang ditugaskan, Service Order terkait, penggunaan spare part, notifikasi, profil, dan status provider.
+- Cashier: dashboard, antrian invoice, pembayaran, transaksi, pelanggan/kendaraan, notifikasi, profil, dan status provider.
 
-```text
-GOWA_API_BASE=http://localhost:3000
-```
+Penyembunyian menu hanya untuk pengalaman pengguna. Setiap endpoint aplikasi juga memeriksa bearer token, role, dan permission pada backend. Mekanik hanya dapat membaca Service Order yang ditugaskan kepadanya.
 
-Adapter mengirim:
+## Alur operasional penting
+
+- Booking memakai `Idempotency-Key`; check-in berulang mengembalikan Service Order yang sama.
+- Status Service Order hanya boleh mengikuti transisi `waiting → inspection → approval → in_progress → quality_check → ready → completed`. Quality check dapat mengembalikan pekerjaan ke `in_progress`.
+- Penyelesaian tugas aman bila diulang.
+- Mutasi stok dan penerimaan stok diproses dengan D1 batch, merekam stok sebelum/sesudah, menolak stok negatif, dan membutuhkan idempotency key.
+- Penggunaan spare part pada Service Order sekaligus membuat movement stok yang dapat diaudit.
+- Invoice hanya dibuat setelah quality check. Satu invoice hanya dapat memiliki satu pembayaran berstatus `paid`; pembayaran tunai memvalidasi jumlah diterima dan menghitung kembalian.
+- Notification mark-read dan mark-all-read idempotent.
+- Dashboard serta laporan memakai cache KV berumur 30–60 detik; D1 tetap menjadi sumber kebenaran dan entry kedaluwarsa secara alami.
+- Saat R2 diaktifkan, upload maksimal 5 MB, hanya tipe file yang diizinkan, memakai generated key, dan diunduh melalui endpoint Worker terautentikasi. Tanpa binding `BUCKET`, upload/download mengembalikan `503 provider_not_configured` tanpa mengganggu modul lain.
+
+## External providers
+
+- WhatsApp memakai adapter GOWA lama melalui service binding `GOWA_VPC` atau `GOWA_API_BASE` + `GOWA_API_TOKEN`. Tanpa konfigurasi, API mengembalikan `provider_not_configured`; kegagalan upstream mengembalikan `provider_unavailable`.
+- Email belum memiliki provider dan selalu melaporkan `provider_not_configured`.
+- Cash diproses langsung di D1. QRIS dan transfer tidak memalsukan konfirmasi: tanpa adapter provider, API mengembalikan status konfigurasi yang jujur dan menolak pembayaran eksternal.
+- R2 saat ini opsional dan belum diaktifkan pada account production. Aktifkan R2, buat bucket `irwanmotor-uploads`, lalu tambahkan kembali binding `BUCKET` untuk mengaktifkan lampiran.
+
+## API dan response
+
+Semua endpoint aplikasi berada di `/api/v1` dan dijelaskan di `collection.md`. Response sukses mengikuti format lama yang diperluas:
 
 ```json
-{ "phone": "6281234567890", "message": "Kode OTP ..." }
+{ "ok": true, "request_id": "req_...", "items": [] }
 ```
 
-ke:
+Response error tidak menampilkan SQL, stack trace, secret, atau detail binding:
 
-```text
-POST /send/message
+```json
+{ "ok": false, "code": "validation_error", "message": "...", "request_id": "req_..." }
 ```
 
-Plaintext OTP hanya ada di payload queue/direct delivery, tidak disimpan di D1 dan tidak ditampilkan dashboard.
+## Deployment
 
-## Notes
+Deployment production tidak dijalankan otomatis dari proses development. Setelah secrets, resource, migrasi remote, dan provider ditinjau:
 
-- `wrangler.jsonc` adalah source of truth binding Worker.
-- Jalankan `npx wrangler types` setelah mengubah binding.
-- Jangan copy credential dari project `workers-auth`.
-- Production Worker URL: `https://bengkel.irwanmotor.workers.dev`.
+```powershell
+npm run test:run
+npm run check:frontend
+npx wrangler d1 migrations apply irwanmotor_auth_core --remote
+npm run deploy
+```
+
+Production Worker yang dikonfigurasi saat ini: `https://bengkel.irwanmotor.workers.dev`.

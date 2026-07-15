@@ -2,12 +2,22 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "bengkel",
 	"main": "src/index.js",
-	"compatibility_date": "2026-06-19",
+	"compatibility_date": "2026-07-15",
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
 	"assets": {
-		"directory": "./public"
+		"directory": "./public",
+		"binding": "ASSETS",
+		"not_found_handling": "single-page-application",
+		"run_worker_first": [
+			"/api/*",
+			"/auth/*",
+			"/admin/*",
+			"/health",
+			"/dashboard",
+			"/files/*"
+		]
 	},
 	"observability": {
 		"enabled": true
@@ -24,7 +34,7 @@
 		"OTP_RESEND_COOLDOWN_SECONDS": "60",
 		"AUTH_ISSUER": "https://bengkel.irwanmotor.workers.dev",
 		"AUTH_AUDIENCE": "irwanmotor-services",
-		"GOWA_API_BASE": "https://whatsapp.punya.top",
+		"GOWA_API_BASE": "https://gowa1.punya.top",
 		"PASSWORD_PBKDF2_ITERATIONS": "100000",
 		"ENABLE_ADMIN_SEED": "false",
 		"ENABLE_DIRECT_OTP_FALLBACK": "true",
@@ -45,12 +55,21 @@
 	},
 	"d1_databases": [
 		{
+			"binding": "DB",
+			"database_name": "irwanmotor_auth_core",
+			"database_id": "47ae2ad0-9e5c-4539-bcb6-dd758f3abd06"
+		},
+		{
 			"binding": "AUTH_DB",
 			"database_name": "irwanmotor_auth_core",
 			"database_id": "47ae2ad0-9e5c-4539-bcb6-dd758f3abd06"
 		}
 	],
 	"kv_namespaces": [
+		{
+			"binding": "CACHE",
+			"id": "d0e3f21f860e41ce969b5063c48b69d0"
+		},
 		{
 			"binding": "AUTH_CACHE",
 			"id": "d0e3f21f860e41ce969b5063c48b69d0"

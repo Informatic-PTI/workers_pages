@@ -1,0 +1,565 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Booking Service - MotoPro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f7f9fb",
+                      "tertiary-fixed": "#6ffbbe",
+                      "inverse-surface": "#2d3133",
+                      "background": "#f7f9fb",
+                      "surface-container-low": "#f2f4f6",
+                      "on-secondary": "#ffffff",
+                      "primary": "#004ac6",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "surface-bright": "#f7f9fb",
+                      "primary-container": "#2563eb",
+                      "surface-dim": "#d8dadc",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#ffddb8",
+                      "surface-container": "#eceef0",
+                      "tertiary": "#006242",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#434655",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#bdffdb",
+                      "secondary": "#855300",
+                      "surface-container-high": "#e6e8ea",
+                      "on-background": "#191c1e",
+                      "outline": "#737686",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "primary-fixed": "#dbe1ff",
+                      "on-primary-fixed": "#00174b",
+                      "secondary-container": "#fea619",
+                      "inverse-on-surface": "#eff1f3",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#191c1e",
+                      "on-primary-container": "#eeefff",
+                      "tertiary-container": "#007d55",
+                      "surface-variant": "#e0e3e5",
+                      "on-secondary-container": "#684000",
+                      "surface-tint": "#0053db",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "on-tertiary-fixed": "#002113",
+                      "inverse-primary": "#b4c5ff",
+                      "outline-variant": "#c3c6d7",
+                      "on-secondary-fixed": "#2a1700",
+                      "surface-container-highest": "#e0e3e5",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "xs": "4px",
+                      "base": "8px",
+                      "xxl": "48px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "margin-desktop": "32px",
+                      "lg": "24px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "metadata": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display-kpi": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "metadata": ["11px", {"lineHeight": "14px", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-kpi": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        .timeline-line {
+            position: absolute;
+            left: 56px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--color-surface-variant, #e0e3e5);
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-full flex overflow-hidden font-metadata">
+<!-- SideNavBar -->
+<nav class="hidden md:flex bg-surface-container-lowest dark:bg-inverse-surface text-primary dark:text-inverse-primary font-body-md text-body-md h-screen w-64 border-r border-outline-variant shadow-sm flex-col py-lg px-md shrink-0 sticky top-0">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[24px]">two_wheeler</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary leading-tight">MotoPro SaaS</h1>
+<p class="font-metadata text-metadata text-on-surface-variant">Premium Management</p>
+</div>
+</div>
+<div class="mb-6">
+<button class="w-full bg-primary-container text-on-primary-container hover:bg-primary-container/90 transition-colors py-2 px-4 rounded-lg font-label-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Service Order
+            </button>
+</div>
+<ul class="flex flex-col gap-1 overflow-y-auto flex-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-semibold transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                    Booking
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">build_circle</span>
+                    Service Orders
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+                    Customers
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">motorcycle</span>
+                    Vehicles
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">engineering</span>
+                    Mechanics
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+                    Spare Parts
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    Inventory
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+                    Cashier
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+                    Transactions
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">assessment</span>
+                    Reports
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                    Logs
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar (Visible on Mobile only) -->
+<header class="md:hidden flex justify-between items-center h-16 px-margin-mobile sticky top-0 z-40 w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="font-headline-md text-headline-md font-bold text-primary">MotoPro</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant"><span class="material-symbols-outlined">search</span></button>
+<button class="text-on-surface-variant"><span class="material-symbols-outlined">notifications</span></button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an auto repair shop manager, well-lit, smiling slightly, modern corporate style, looking directly at the camera, light background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmwiut8YQvsar7wd1-yR0sZ48QMgZ93LZYLkime2m61O9bc0tm-62JmcT2nXRoaXl1ciB3cMQ3P5KKK4tCu9L8JYyj1-C_jMvdc7NNJ8fkd2zDba15D0Fax8hSGNZtfg5VySjbslpjxh17qwqCrjLl4Li2d7pK97DJ-46_jyVEBMswktcfXY_GcU7kBrSY71ETzi58EXecSg4eofJKFc8DsY48JH3gS4Dmibi92EHRVcwgiizrkI_yDGBhDu7ZQe4HFACO6vGmleqc">
+</div>
+</div>
+</header>
+<!-- Desktop Context Header -->
+<div class="hidden md:flex justify-between items-center h-16 px-margin-desktop sticky top-0 z-30 w-full bg-surface-container-lowest shadow-sm border-b border-outline-variant">
+<div class="flex-1 flex items-center relative max-w-md">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-on-surface-variant" placeholder="Cari booking, pelanggan, atau nopol..." type="text">
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">settings</span></button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an auto repair shop manager, well-lit, smiling slightly, modern corporate style, looking directly at the camera, light background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAEQoz8ci1ij4cA6qdDM8Qoc9XEs0CrZTM7ySrbnqU7cTKKdCCOf2HfTbrjEceHTcH9F5Cs_gvZ1PaLf0K4NTssx33R_Z8JZi3DYWniyC_ROpV8c7PTXUqdxmADZrNNhYYTi-6Y2yDJx9lezTp_YqU_HStT5rV9Ehi02lG8tDwgOwANHnA1X93UPuH-k2LUtshsvmMKO4VrLpESr8N6iM6tManIFAQuLE_3peUo5tqqQfUmc8q2D7TTqNr8YvahC2kaWMtfc9K_51D">
+</div>
+</div>
+</div>
+<main class="flex-1 overflow-y-auto bg-surface p-margin-mobile md:p-margin-desktop">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-xl">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold mb-1">Booking Service</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola jadwal service dan kedatangan pelanggan bengkel.</p>
+</div>
+<button class="bg-primary-container text-on-primary-container hover:bg-primary-container/90 transition-colors py-2.5 px-5 rounded-lg font-label-sm font-semibold flex items-center justify-center gap-2 shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Booking Baru
+                </button>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: KPIs & Attention Panel -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-2 gap-sm">
+<!-- Booking Hari Ini -->
+<div class="bg-surface-container-lowest p-md rounded-xl col-span-2 flex justify-between items-center border border-outline-variant shadow-sm">
+<div>
+<p class="font-metadata text-metadata text-on-surface-variant uppercase tracking-wider mb-2 font-semibold">Booking Hari Ini</p>
+<div class="flex items-center gap-3">
+<span class="font-display-kpi text-display-kpi text-on-surface">18</span>
+<span class="font-label-sm text-label-sm text-tertiary-container bg-tertiary-container/10 px-2 py-1 rounded-full">+12 sudah datang</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20">
+<span class="material-symbols-outlined text-primary-container text-[24px]">calendar_today</span>
+</div>
+</div>
+<!-- Akan Datang -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[100px]">
+<p class="font-metadata text-metadata text-on-surface-variant uppercase tracking-wider mb-2 font-semibold">Akan Datang</p>
+<div>
+<span class="font-headline-lg text-headline-lg text-on-surface block mb-1">6</span>
+<span class="font-metadata text-metadata text-secondary-container">3 dalam 2 jam</span>
+</div>
+</div>
+<!-- Menunggu -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[100px]">
+<p class="font-metadata text-metadata text-on-surface-variant uppercase tracking-wider mb-2 font-semibold">Menunggu</p>
+<div>
+<span class="font-headline-lg text-headline-lg text-on-surface block mb-1">5</span>
+<span class="font-metadata text-metadata text-on-surface-variant">Belum proses</span>
+</div>
+</div>
+<!-- Terlambat -->
+<div class="bg-error-container/10 p-md rounded-xl border border-error/20 shadow-sm flex flex-col justify-between min-h-[100px]">
+<p class="font-metadata text-metadata text-error uppercase tracking-wider mb-2 font-semibold">Terlambat</p>
+<div>
+<span class="font-headline-lg text-headline-lg text-error block mb-1">2</span>
+<span class="font-metadata text-metadata text-error">Belum check-in</span>
+</div>
+</div>
+<!-- Slot Tersedia -->
+<div class="bg-tertiary-container/5 p-md rounded-xl border border-tertiary-container/20 shadow-sm flex flex-col justify-between min-h-[100px]">
+<p class="font-metadata text-metadata text-tertiary-container uppercase tracking-wider mb-2 font-semibold">Slot Tersedia</p>
+<div>
+<span class="font-headline-lg text-headline-lg text-tertiary-container block mb-1">8</span>
+<span class="font-metadata text-metadata text-tertiary-container">Hingga 18:00</span>
+</div>
+</div>
+</div>
+<!-- Attention Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex-1">
+<div class="bg-surface-container px-md py-3 border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-label-sm text-label-sm text-on-surface flex items-center gap-2 font-semibold">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+                                Perlu Perhatian
+                            </h3>
+<span class="bg-error text-on-error font-metadata text-metadata px-2 py-0.5 rounded-full font-semibold">3</span>
+</div>
+<div class="p-2 flex flex-col gap-1">
+<!-- Alert 1 -->
+<div class="p-3 rounded-lg bg-error-container/10 hover:bg-error-container/20 transition-colors border border-transparent hover:border-error/20 flex gap-3 cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-error-container/50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-error-container text-[16px]">schedule</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold mb-1">Pelanggan Belum Datang</p>
+<p class="font-metadata text-metadata text-on-surface-variant">Rama Saputra • <span class="text-error font-semibold">32 menit terlambat</span></p>
+</div>
+</div>
+<!-- Alert 2 -->
+<div class="p-3 rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant flex gap-3 cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-secondary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[16px]">timer</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold mb-1">Booking Dalam 30 Menit</p>
+<p class="font-metadata text-metadata text-on-surface-variant">Andi Pratama • 14:00</p>
+</div>
+</div>
+<!-- Alert 3 -->
+<div class="p-3 rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant flex gap-3 cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">engineering</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold mb-1">Mekanik Pilihan Tidak Tersedia</p>
+<p class="font-metadata text-metadata text-on-surface-variant">Booking 15:30 (Budi) • Mekanik sedang cuti</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Timeline View -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col h-[600px] lg:h-auto overflow-hidden">
+<div class="px-md py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest sticky top-0 z-20">
+<div class="flex items-center gap-3">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Jadwal Hari Ini</h2>
+<span class="font-metadata text-metadata text-on-surface-variant bg-surface-container px-2 py-1 rounded-md">Sen, 24 Okt 2023</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded-md hover:bg-surface-container-low text-on-surface-variant border border-transparent transition-colors"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-low text-on-surface-variant border border-transparent transition-colors"><span class="material-symbols-outlined text-[20px]">today</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-low text-on-surface-variant border border-transparent transition-colors"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto relative p-md">
+<!-- Vertical Timeline Line -->
+<div class="timeline-line"></div>
+<!-- 08:00 Slot -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">08.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-3 pb-4">
+<!-- Empty State for slot -->
+<div class="w-full border-t border-dashed border-outline-variant"></div>
+</div>
+</div>
+<!-- 09:00 Slot - Card -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">09.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-tertiary mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm hover:border-primary-container/50 transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, close-up shot of a modern scooter wheel and brake disc in a brightly lit repair shop, indicating vehicle service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtaDZI8s2hGDdGKtJw4y0xveY2uNDVaBX-dETtPLU6vqdoaS61qKqkDm8nlmaFm3jMjrMKwA67NCbW8FsYBFZnXD6zB6ggQhYB-9OK9SMF7lKIF-2yIL5iUgh25xORCvNyfPvXWTcjmNnhiR-SdJFKo6fKJ82PfQKH-bB_pJAYYnh0ozSrhTriHqbXg8zXHzRPncWaILATGhgY0sQRLHnFoXyrNICjCbG_F2ooaI-wHHA5DEKN8sNULz1APmSmFZeV0uXsOoR9PsD7">
+</div>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-semibold group-hover:text-primary-container transition-colors mb-0.5">Dimas Setiawan</h4>
+<p class="font-metadata text-metadata text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">two_wheeler</span> Honda Beat (B 1234 ABC)
+                                                </p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-container/10 text-tertiary-container px-2.5 py-1 rounded-full font-semibold border border-tertiary-container/20">Sudah Datang</span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 font-metadata text-metadata text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">build</span> Servis Rutin + Ganti Oli
+                                            </div>
+<div class="flex items-center gap-1.5 font-metadata text-metadata text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">person</span> Mekanik: Joko
+                                            </div>
+</div>
+<button class="font-label-sm text-label-sm text-primary-container hover:underline font-semibold">Detail</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 10:00 Slot -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">10.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-3 pb-4">
+<div class="w-full border-t border-dashed border-outline-variant"></div>
+</div>
+</div>
+<!-- 10:30 Slot - Card -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">10.30</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-primary-container mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm hover:border-primary-container/50 transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-container"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant font-headline-md font-semibold border border-outline-variant">
+                                                 FN
+                                            </div>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-semibold group-hover:text-primary-container transition-colors mb-0.5">Fajar Nugraha</h4>
+<p class="font-metadata text-metadata text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">two_wheeler</span> Yamaha NMAX (D 4567 DEF)
+                                                </p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-primary-container/10 text-primary-container px-2.5 py-1 rounded-full font-semibold border border-primary-container/20">Dikonfirmasi</span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 font-metadata text-metadata text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">build</span> Ganti Ban Belakang
+                                            </div>
+<div class="flex items-center gap-1.5 font-metadata text-metadata text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">person</span> Mekanik: Budi
+                                            </div>
+</div>
+<div class="flex gap-3">
+<button class="font-label-sm text-label-sm text-on-surface-variant border border-outline-variant px-3 py-1.5 rounded-lg hover:bg-surface-container font-semibold transition-colors">Ubah Jadwal</button>
+<button class="font-label-sm text-label-sm text-primary-container hover:underline px-2 font-semibold">Check-in</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 11:00 Slot -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">11.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-3 pb-4">
+<div class="w-full border-t border-dashed border-outline-variant"></div>
+</div>
+</div>
+<!-- 12:00 Slot (Break) -->
+<div class="flex gap-4 mb-6 relative z-10 opacity-70">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">12.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-1">
+<div class="w-full bg-surface-container-high rounded-lg p-3 text-center border border-outline-variant">
+<span class="font-body-md text-body-md font-semibold text-on-surface-variant flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">restaurant</span> Istirahat Siang
+                                    </span>
+</div>
+</div>
+</div>
+<!-- 13:00 Slot -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">13.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-3 pb-4">
+<div class="w-full border-t border-dashed border-outline-variant"></div>
+</div>
+</div>
+<!-- 13:30 Slot - Card (Late) -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-error font-semibold">13.30</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-error mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest animate-pulse"></div>
+<div class="flex-1">
+<div class="bg-error-container/5 border border-error/30 rounded-xl p-4 shadow-sm hover:border-error/60 transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant font-headline-md overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A high-quality image of a motorcycle's front headlight in a brightly lit modern garage setting, clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASigMdpw1yH51pFz-t5Qu3cS4iwxE3StY0mPdDYQU01owmhLN-7TRPsjeiQP-IV_vQg5iQxfSiSduM_ay6yGfYacXh0QBSvNrumL3mie0d21evyO9sVW9QkjEmorTvm_E4beMClAo24VWQDjv-XRyY1DbUcQsBrrhpQbdLmVQ_HELIi2vka0wabn_HZABIWA2UlltvN2kK4wX038ecj_0Xmd1K3GYEfGgnXrgtE9I6I48FdUxse1tt2M4towEUA5dJjP5PJOSt9z65">
+</div>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-semibold group-hover:text-error transition-colors mb-0.5">Rama Saputra</h4>
+<p class="font-metadata text-metadata text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">two_wheeler</span> Yamaha Aerox (Z 8901 GHI)
+                                                </p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-error/10 text-error px-2.5 py-1 rounded-full font-semibold border border-error/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Terlambat
+                                        </span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-4 border-t border-error/10">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 font-metadata text-metadata text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">build</span> Turun Mesin Ringan
+                                            </div>
+<div class="flex items-center gap-1.5 font-metadata text-metadata text-error font-semibold">
+<span class="material-symbols-outlined text-[16px]">schedule</span> 32 menit lalu
+                                            </div>
+</div>
+<div class="flex gap-3">
+<button class="font-label-sm text-label-sm text-on-surface-variant border border-outline-variant px-3 py-1.5 rounded-lg hover:bg-surface-container font-semibold transition-colors">Batalkan</button>
+<button class="font-label-sm text-label-sm text-error bg-error/10 border border-error/20 px-3 py-1.5 rounded-lg hover:bg-error/20 flex items-center gap-1 font-semibold transition-colors">
+<span class="material-symbols-outlined text-[16px]">call</span> Hubungi
+                                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 14:00 Slot to end -->
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">14.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-3 pb-4">
+<div class="w-full border-t border-dashed border-outline-variant relative">
+<div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-surface-container-lowest px-3 py-1 font-label-sm text-label-sm text-tertiary-container bg-tertiary-container/10 rounded-full border border-tertiary-container/20 font-semibold shadow-sm">
+                                        + Slot Tersedia
+                                    </div>
+</div>
+</div>
+</div>
+<div class="flex gap-4 mb-6 relative z-10">
+<div class="w-12 text-right pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">15.00</span>
+</div>
+<div class="w-3 h-3 rounded-full bg-surface-variant mt-2.5 z-10 -ml-[25px] ring-4 ring-surface-container-lowest"></div>
+<div class="flex-1 flex items-center pt-3 pb-4">
+<div class="w-full border-t border-dashed border-outline-variant"></div>
+</div>
+</div>
+<div class="h-12 relative"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

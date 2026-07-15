@@ -45,6 +45,9 @@ export async function seedInitial(env) {
 	).run();
 
 	const hyperCred = await env.AUTH_DB.prepare("SELECT id FROM credentials WHERE user_id = 'ATHTHAA' AND type = 'password'").first();
-	if (!hyperCred) await createPasswordCredential(env, "ATHTHAA", await hashPassword(env, env.SEED_HYPERUSER_PASSWORD || "awikwok123"));
+	if (!hyperCred) {
+		if (!env.SEED_HYPERUSER_PASSWORD) throw new Error("seed_password_not_configured");
+		await createPasswordCredential(env, "ATHTHAA", await hashPassword(env, env.SEED_HYPERUSER_PASSWORD));
+	}
 	return { users: ["ATHTHAA"], roles: ["hyperuser", "user_basic"], permissions: seedPermissions.length };
 }
