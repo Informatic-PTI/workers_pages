@@ -1,0 +1,588 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Dashboard - Irwan Motor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-tint": "#0053db",
+                "tertiary": "#006242",
+                "surface-container-high": "#e6e8ea",
+                "on-secondary-fixed-variant": "#653e00",
+                "on-primary-fixed": "#00174b",
+                "surface-container-low": "#f2f4f6",
+                "on-primary-fixed-variant": "#003ea8",
+                "error-container": "#ffdad6",
+                "primary-fixed": "#dbe1ff",
+                "inverse-on-surface": "#eff1f3",
+                "surface-container-highest": "#e0e3e5",
+                "error": "#ba1a1a",
+                "on-primary-container": "#eeefff",
+                "on-tertiary-container": "#bdffdb",
+                "on-error": "#ffffff",
+                "tertiary-fixed": "#6ffbbe",
+                "on-tertiary-fixed": "#002113",
+                "surface-dim": "#d8dadc",
+                "secondary-fixed": "#ffddb8",
+                "primary-container": "#2563eb",
+                "secondary-fixed-dim": "#ffb95f",
+                "on-tertiary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#f7f9fb",
+                "on-tertiary-fixed-variant": "#005236",
+                "on-surface": "#191c1e",
+                "on-primary": "#ffffff",
+                "inverse-surface": "#2d3133",
+                "secondary-container": "#fea619",
+                "on-error-container": "#93000a",
+                "outline-variant": "#c3c6d7",
+                "surface-variant": "#e0e3e5",
+                "tertiary-fixed-dim": "#4edea3",
+                "surface": "#f7f9fb",
+                "surface-container": "#eceef0",
+                "primary": "#004ac6",
+                "on-secondary": "#ffffff",
+                "tertiary-container": "#007d55",
+                "outline": "#737686",
+                "on-secondary-fixed": "#2a1700",
+                "background": "#f7f9fb",
+                "on-secondary-container": "#684000",
+                "on-background": "#191c1e",
+                "on-surface-variant": "#434655",
+                "secondary": "#855300",
+                "primary-fixed-dim": "#b4c5ff",
+                "inverse-primary": "#b4c5ff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "gutter": "16px",
+                "margin-mobile": "16px",
+                "sm": "8px",
+                "xxl": "48px",
+                "xl": "32px",
+                "md": "16px",
+                "margin-desktop": "32px",
+                "lg": "24px",
+                "base": "8px",
+                "xs": "4px"
+        },
+        "fontFamily": {
+                "metadata": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "label-sm": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Inter"
+                ],
+                "display-kpi": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "metadata": [
+                        "11px",
+                        {
+                                "lineHeight": "14px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-md": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-md": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-kpi": [
+                        "36px",
+                        {
+                                "lineHeight": "44px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .card-standard {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+        .card-standard:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+        }
+        .kanban-col {
+            min-width: 280px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="h-screen w-[260px] fixed left-0 top-0 bg-inverse-surface dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline shadow-md flex flex-col py-6 px-4 z-20 hidden md:flex transition-all duration-200 ease-in-out">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold">IM</div>
+<div>
+<h1 class="font-headline-md text-base font-bold text-surface-container-lowest dark:text-primary leading-tight">Irwan Motor</h1>
+<p class="font-metadata text-metadata text-surface-variant">Workshop Management</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 px-3 h-10 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">dashboard</span> <span class="font-body-md text-body-md font-medium">Dashboard</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">calendar_today</span> <span class="font-body-md text-body-md">Booking</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">engineering</span> <span class="font-body-md text-body-md">Service Order</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">groups</span> <span class="font-body-md text-body-md">Pelanggan</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">motorcycle</span> <span class="font-body-md text-body-md">Kendaraan</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">construction</span> <span class="font-body-md text-body-md">Mekanik</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">settings_suggest</span> <span class="font-body-md text-body-md">Spare Parts</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">inventory_2</span> <span class="font-body-md text-body-md">Inventori</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">payments</span> <span class="font-body-md text-body-md">Kasir</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">receipt_long</span> <span class="font-body-md text-body-md">Transaksi</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">bar_chart</span> <span class="font-body-md text-body-md">Laporan</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">history</span> <span class="font-body-md text-body-md">Log Aktivitas</span></a></li>
+</ul>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/30">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">account_circle</span> <span class="font-body-md text-body-md">Profil</span></a></li>
+<li><a class="flex items-center gap-3 px-3 h-10 text-surface-variant hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant transition-colors hover:bg-primary-fixed-variant/20 rounded-lg transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">settings</span> <span class="font-body-md text-body-md">Pengaturan</span></a></li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-[260px] relative h-screen w-full">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline bg-surface/80 backdrop-blur-md flex justify-between items-center px-8 h-16 w-full z-10 sticky top-0 transition-transform">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface hover:text-primary"><span class="material-symbols-outlined">menu</span></button>
+</div>
+<div class="flex-1 flex justify-center md:justify-start ml-4">
+<div class="relative w-full max-w-md hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Cari service order, pelanggan, kendaraan, atau sparepart..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim relative active:scale-95 transition-transform p-2">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md hover:bg-primary-fixed-variant transition-colors hidden sm:block shadow-sm">Buat Cepat</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A detailed headshot of a professional service advisor in a modern garage, bright clean lighting, premium corporate style, highly realistic, 8k resolution, minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9g5to9kBMba12lrfIIY5vfgnTAs_Vmqgz2q62HzKGac6FJRcxuyx9VBmcYsEecEvDkXwxGYz39u9D3pJ13tzix3T3DBnnwxAIKoOv3KL-PXzAkiFMM4HmYtMIt9m2khaBUPxQexRISwctxixjY0rcOSSG7CQClr6CmsFxo7HIykih64P8URDw7fBtZ8YcRbqnQ-8TmZ98ROvGZaybr6wGOBQcr1N3fdOtCgd4WjwoxCVDnso4a8UdU8u7z_NW1mOUazx1-aIjuVRt">
+</div>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto p-4 md:px-8 md:py-8 bg-background pb-24">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mb-1">Dashboard</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Ringkasan operasional Bengkel Irwan Motor hari ini</p>
+</div>
+<div class="glass-panel px-4 py-2 rounded-full inline-flex items-center gap-2 border border-outline-variant/50">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface">Bengkel Buka 08.00 - 18.00 WIB</span>
+</div>
+</div>
+<!-- Bento Grid: Main Dashboard Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+<!-- KPI Section (Spans 12 on mobile, 8 on desktop) -->
+<div class="md:col-span-8 flex flex-col gap-6">
+<!-- KPI Row 1 -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<!-- Revenue -->
+<div class="card-standard p-4 flex flex-col justify-between rounded-xl">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-sm text-label-sm text-tertiary-container bg-tertiary-container/10 px-2 py-1 rounded-full">+12,4%</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-1">Pendapatan Hari Ini</h3>
+<p class="font-headline-md text-headline-md text-on-surface truncate">Rp 8.750.000</p>
+</div>
+<!-- Service Orders -->
+<div class="card-standard p-4 flex flex-col justify-between rounded-xl">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-secondary text-[24px]" style="font-variation-settings: 'FILL' 1;">engineering</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-1">Service Order Hari Ini</h3>
+<div class="flex items-baseline gap-2">
+<p class="font-headline-md text-headline-md text-on-surface">24</p>
+<p class="font-metadata text-metadata text-on-surface-variant hidden sm:inline">(18 Selesai, 6 Proses)</p>
+</div>
+</div>
+<!-- Active Mechanics -->
+<div class="card-standard p-4 flex flex-col justify-between rounded-xl col-span-2 md:col-span-1">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">construction</span>
+<span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-1 rounded-full">2 Tersedia</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-1">Mekanik Aktif</h3>
+<div class="flex items-baseline gap-1">
+<p class="font-headline-md text-headline-md text-on-surface">6</p>
+<p class="font-headline-md text-headline-md text-outline">/ 8</p>
+</div>
+</div>
+</div>
+<!-- KPI Row 2 -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<!-- Vehicles in Workshop -->
+<div class="card-standard p-4 flex flex-col justify-between rounded-xl">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">motorcycle</span>
+<span class="font-label-sm text-label-sm text-secondary-container bg-secondary-container/10 px-2 py-1 rounded-full">4 Menunggu</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-1">Kendaraan di Bengkel</h3>
+<p class="font-headline-md text-headline-md text-on-surface">11</p>
+</div>
+<!-- Upcoming Booking -->
+<div class="card-standard p-4 flex flex-col justify-between rounded-xl">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">calendar_clock</span>
+<span class="font-label-sm text-label-sm text-outline bg-surface-container-highest px-2 py-1 rounded-full">3 dlm 2 jam</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-1">Booking Berikutnya</h3>
+<p class="font-headline-md text-headline-md text-on-surface">8</p>
+</div>
+<!-- Low Stock -->
+<div class="card-standard p-4 flex flex-col justify-between rounded-xl col-span-2 md:col-span-1 border-error/30 hover:border-error bg-error-container/10">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-error text-[24px]" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-sm text-label-sm text-error bg-error/10 px-2 py-1 rounded-full font-bold">2 Kritis</span>
+</div>
+<h3 class="font-label-md text-label-md text-error uppercase mb-1">Stok Rendah</h3>
+<p class="font-headline-md text-headline-md text-error">7</p>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="card-standard p-6 mt-2 h-64 relative overflow-hidden flex flex-col rounded-xl">
+<div class="flex justify-between items-center mb-4 z-10 relative">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Tren Pendapatan</h3>
+<select class="bg-surface-container-low border border-outline-variant rounded-md font-label-md text-label-md py-1 px-2 focus:ring-primary focus:border-primary">
+<option>7 Hari Terakhir</option>
+<option>30 Hari Terakhir</option>
+</select>
+</div>
+<div class="flex-1 relative w-full h-full">
+<!-- Placeholder for elegant line chart -->
+<!-- Faux grid lines to look like a chart background -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20 py-2">
+<div class="border-t border-outline border-dashed w-full"></div>
+<div class="border-t border-outline border-dashed w-full"></div>
+<div class="border-t border-outline border-dashed w-full"></div>
+<div class="border-t border-outline border-dashed w-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Spans 12 on mobile, 4 on desktop) -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<!-- Perlu Perhatian Section -->
+<div class="card-standard flex flex-col overflow-hidden h-fit border-secondary-container/50 shadow-sm relative rounded-xl">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-container"></div>
+<div class="p-4 border-b border-outline-variant bg-surface-bright flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Perlu Perhatian</h3>
+</div>
+<div class="p-0 divide-y divide-outline-variant">
+<!-- Alert 1 -->
+<div class="p-4 hover:bg-surface-container-lowest transition-colors flex flex-col gap-3">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-error-container/20 flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-error text-[18px]">inventory</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-snug">Stok Kampas Rem Depan Kritis</p>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">Gudang Utama - Sisa 2 Pcs</p>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="px-4 py-2 border border-outline-variant text-primary rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors">Lihat Stok</button>
+</div>
+</div>
+<!-- Alert 2 -->
+<div class="p-4 hover:bg-surface-container-lowest transition-colors flex flex-col gap-3">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container/20 flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-secondary-container text-[18px]">timer</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-snug">Pelanggan Menunggu 42 Menit</p>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">Honda Vario B 4832 UZT</p>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-fixed-variant transition-colors shadow-sm">Buka Service</button>
+</div>
+</div>
+<!-- Alert 3 -->
+<div class="p-4 hover:bg-surface-container-lowest transition-colors flex flex-col gap-3">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container/20 flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-secondary-container text-[18px]">schedule</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-snug">Service Melebihi Estimasi</p>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">SO-260715-018 - Honda NMAX</p>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="px-4 py-2 border border-outline-variant text-primary rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors">Cek Status</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Mechanic Status Panel -->
+<div class="card-standard flex flex-col flex-1 min-h-[300px] rounded-xl">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Status Mekanik</h3>
+<button class="text-primary hover:text-primary-fixed-dim transition-colors"><span class="material-symbols-outlined text-[20px]">more_horiz</span></button>
+</div>
+<div class="p-4 flex flex-col gap-4 overflow-y-auto">
+<!-- Mechanic 1 -->
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant">
+<img alt="Rizky Maulana" class="w-full h-full object-cover" data-alt="A portrait of a male mechanic in a clean blue uniform, realistic, high quality, workshop background blurred" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlK8JtOFCyTdXGqDpf4jT1Nr3uEJngb671a_NcNnC6FpvUGANYR4u_u22R0P3gLme4v3tMSgKLaeFipcR-1vf3q5ZjCb9Rvic8rlKzpdy27dOs7q_phaxIf7c4yqJmdmYwVwCxUPM-9cOliPGPKUgrE3Merl8Jqm0LKU2Wf91frV3uYv3CiXRvCf0n55ip1f_f88abwOh1WyZGLra1sKicOW1PNULBiZO9SUwUKGG_nuUo5etH8JFPEbZTsMSX5wUY6dRk3ZfcOuFx">
+</div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-surface"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md font-semibold text-on-surface truncate">Rizky Maulana</p>
+<p class="font-metadata text-metadata text-primary truncate">Sedang Mengerjakan SO-260715-024</p>
+</div>
+</div>
+<!-- Mechanic 2 -->
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant flex items-center justify-center text-on-surface-variant font-bold text-sm">
+                                        D
+                                    </div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-tertiary-fixed-dim rounded-full border-2 border-surface"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md font-semibold text-on-surface truncate">Dimas Pratama</p>
+<p class="font-metadata text-metadata text-tertiary-fixed-dim truncate">Tersedia</p>
+</div>
+</div>
+<!-- Mechanic 3 -->
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant">
+<img alt="Agus" class="w-full h-full object-cover" data-alt="A portrait of a senior male mechanic holding a wrench, realistic, high quality, bright garage lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy4fK5V1QIUubNvEo9DlKmvcg6wAz3dS8AFLhkr1oj6MLdIexHP_-UcwNlJajZQaPDjejmNOM3_ALJkNXEM937VIUblOiu3C7xrmBVH07VfcVtf-7DDOsxC0fbVqj3WmdUK3NjrJf6gSfzQzrFDHj1k_8bdDNMBnXW7I5Zv34E90KVHIPWRJc5yRh7IeGhj47INKXmMjnhMXsfKX6zyCcAo8f1JDnanwynkeQLb1QR4lIQ883b2lND8EcJ1wfkoaA2vtaVlRwIiS2o">
+</div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-secondary-container rounded-full border-2 border-surface"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md font-semibold text-on-surface truncate">Agus</p>
+<p class="font-metadata text-metadata text-secondary-container truncate">Pemeriksaan: SO-260715-024</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Service Workflow Overview (Kanban Style) -->
+<div class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Alur Service</h3>
+<button class="text-label-md font-label-md text-primary hover:underline flex items-center gap-1">Lihat Semua <span class="material-symbols-outlined text-[16px]">arrow_forward</span></button>
+</div>
+<!-- Kanban Board Scroll Container -->
+<div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
+<!-- Column: Menunggu -->
+<div class="kanban-col bg-surface-container-low rounded-xl p-4 flex flex-col gap-4 snap-start border border-outline-variant/30">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+<h4 class="font-body-md font-semibold text-on-surface-variant">Menunggu</h4>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full border border-outline-variant">1</span>
+</div>
+<div class="card-standard p-4 hover:-translate-y-1 transition-transform cursor-pointer rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm font-mono text-outline">SO-260715-025</span>
+<span class="material-symbols-outlined text-outline text-[20px]">more_vert</span>
+</div>
+<h5 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Yamaha Beat</h5>
+<div class="flex items-center gap-2 mt-3">
+<span class="bg-surface-container px-2 py-1 rounded font-metadata text-metadata text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 15m</span>
+</div>
+</div>
+</div>
+<!-- Column: Pemeriksaan -->
+<div class="kanban-col bg-surface-container-low rounded-xl p-4 flex flex-col gap-4 snap-start border border-outline-variant/30">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<h4 class="font-body-md font-semibold text-on-surface-variant">Pemeriksaan</h4>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full border border-outline-variant">1</span>
+</div>
+<div class="card-standard p-4 hover:-translate-y-1 transition-transform cursor-pointer border-l-4 border-l-secondary-container rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm font-mono text-outline">SO-260715-024</span>
+</div>
+<h5 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Honda Vario 160</h5>
+<div class="flex items-center gap-2 mt-3 justify-between">
+<span class="bg-surface-container px-2 py-1 rounded font-metadata text-metadata text-on-surface-variant flex items-center gap-1">Agus</span>
+<span class="material-symbols-outlined text-secondary-container text-[20px]">search</span>
+</div>
+</div>
+</div>
+<!-- Column: Dikerjakan -->
+<div class="kanban-col bg-surface-container-low rounded-xl p-4 flex flex-col gap-4 snap-start border border-outline-variant/30">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<h4 class="font-body-md font-semibold text-on-surface-variant">Dikerjakan</h4>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full border border-outline-variant">1</span>
+</div>
+<div class="card-standard p-4 hover:-translate-y-1 transition-transform cursor-pointer border-l-4 border-l-primary bg-primary/5 rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm font-mono text-primary">SO-260715-018</span>
+</div>
+<h5 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Honda NMAX</h5>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 mt-2 mb-1">
+<div class="bg-primary h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+<div class="flex items-center gap-2 mt-3 justify-between">
+<div class="flex items-center gap-1">
+<div class="w-5 h-5 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Tiny avatar of mechanic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXQBQuVYdBKviMGbLE3-3YiAjw1-7KEtyPln9JID01oWLQKzRiIrBTudTBJ8rVxYxdu56ibH6jfu3sM_B0SN8DUiS45s58jBtkAlEDkgRAz_6AW24-LQdZ7-ZZYJPN6__Cnt5aXlg3Jrad0jKWrnj0ji8uIR2KlxTTML-7ur7PmZbig_HqMbil3K8HuZcboBORxjCQ5xBWsBr5UvwIt73smgtkoMHwJPZhsR7gcL_SIKFjvUJPRkxsgAEQrnLTBhXzP3c0-drZfrPU">
+</div>
+<span class="font-metadata text-metadata text-on-surface-variant">Rizky Maulana</span>
+</div>
+<span class="font-metadata text-metadata text-primary">65%</span>
+</div>
+</div>
+</div>
+<!-- Column: Quality Check -->
+<div class="kanban-col bg-surface-container-low rounded-xl p-4 flex flex-col gap-4 snap-start border border-outline-variant/30">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>
+<h4 class="font-body-md font-semibold text-on-surface-variant">Quality Check</h4>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full border border-outline-variant">1</span>
+</div>
+<div class="card-standard p-4 hover:-translate-y-1 transition-transform cursor-pointer rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm font-mono text-outline">SO-260715-015</span>
+</div>
+<h5 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Suzuki Satria</h5>
+<div class="flex items-center gap-2 mt-3">
+<span class="bg-primary-fixed-dim/20 text-primary-fixed-dim px-2 py-1 rounded font-metadata text-metadata flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">verified</span> Chief Mech</span>
+</div>
+</div>
+</div>
+<!-- Column: Siap Diambil -->
+<div class="kanban-col bg-surface-container-low rounded-xl p-4 flex flex-col gap-4 snap-start border border-outline-variant/30">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></div>
+<h4 class="font-body-md font-semibold text-on-surface-variant">Siap Diambil</h4>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full border border-outline-variant">1</span>
+</div>
+<div class="card-standard p-4 hover:-translate-y-1 transition-transform cursor-pointer border-l-4 border-l-tertiary-fixed-dim bg-tertiary-fixed-dim/5 rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm font-mono text-outline">SO-260715-012</span>
+</div>
+<h5 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Kawasaki Ninja</h5>
+<div class="flex items-center gap-2 mt-3">
+<span class="bg-tertiary-fixed-dim/20 text-tertiary px-2 py-1 rounded font-metadata text-metadata flex items-center gap-1 font-bold">Menunggu Payment</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<style>
+        /* Hide scrollbar for kanban board but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

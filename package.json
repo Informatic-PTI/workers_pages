@@ -6,15 +6,21 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
+    "dev:pages": "node scripts/dev-pages.js",
     "hash-password": "node scripts/hash-password.js",
-    "seed": "node scripts/seed.js",
+    "seed": "node --env-file=.dev.vars scripts/seed.js",
+    "seed:workshop": "node --env-file=.dev.vars scripts/seed-workshop.js",
+    "seed:super": "node scripts/seed-super.js --local",
     "start": "wrangler dev",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest --run",
+    "check:frontend": "node scripts/check-frontend.js",
+    "types": "wrangler types"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.12.4",
+    "@cloudflare/vitest-pool-workers": "^0.18.5",
     "@types/node": "^26.0.0",
-    "vitest": "~3.2.0",
-    "wrangler": "^4.93.1"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.111.0"
   }
 }

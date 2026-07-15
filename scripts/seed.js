@@ -14,7 +14,11 @@ const env = {
 };
 
 const hyperuserId = process.env.SEED_HYPERUSER_ID || "ATHTHAA";
-const hyperuserPassword = process.env.SEED_HYPERUSER_PASSWORD || "awikwok123";
+const hyperuserPassword = process.env.SEED_HYPERUSER_PASSWORD;
+if (!hyperuserPassword) {
+	console.error("SEED_HYPERUSER_PASSWORD wajib diisi untuk membuat akun admin development.");
+	process.exit(1);
+}
 
 function q(value) {
 	if (value === null || value === undefined) return "NULL";
@@ -23,9 +27,14 @@ function q(value) {
 
 async function credentialSql(id, userId, password) {
 	const hash = await hashPassword(env, password);
-	return `INSERT INTO credentials (id,user_id,type,secret_hash,salt,hash_algorithm,iterations,enabled)
-SELECT ${q(id)}, ${q(userId)}, 'password', ${q(hash.secret_hash)}, ${q(hash.salt)}, ${q(hash.hash_algorithm)}, ${hash.iterations}, 1
-WHERE NOT EXISTS (SELECT 1 FROM credentials WHERE user_id = ${q(userId)} AND type = 'password');`;
+	return `UPDATE credentials SET enabled=0, updated_at=CURRENT_TIMESTAMP
+WHERE user_id=${q(userId)} AND type='password' AND id<>${q(id)};
+INSERT INTO credentials (id,user_id,type,secret_hash,salt,hash_algorithm,iterations,enabled,created_at,updated_at)
+VALUES (${q(id)},${q(userId)},'password',${q(hash.secret_hash)},${q(hash.salt)},${q(hash.hash_algorithm)},${hash.iterations},1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+ON CONFLICT(id) DO UPDATE SET
+ user_id=excluded.user_id, secret_hash=excluded.secret_hash, salt=excluded.salt,
+ hash_algorithm=excluded.hash_algorithm, iterations=excluded.iterations, enabled=1,
+ created_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP;`;
 }
 
 const sql = [];

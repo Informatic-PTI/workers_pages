@@ -1,0 +1,452 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Vehicle Detail - MotoPro SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f7f9fb",
+                        "tertiary-fixed": "#6ffbbe",
+                        "inverse-surface": "#2d3133",
+                        "background": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-secondary": "#ffffff",
+                        "primary": "#004ac6",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "surface-bright": "#f7f9fb",
+                        "primary-container": "#2563eb",
+                        "surface-dim": "#d8dadc",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffddb8",
+                        "surface-container": "#eceef0",
+                        "tertiary": "#006242",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#434655",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#bdffdb",
+                        "secondary": "#855300",
+                        "surface-container-high": "#e6e8ea",
+                        "on-background": "#191c1e",
+                        "outline": "#737686",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-fixed": "#00174b",
+                        "secondary-container": "#fea619",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "on-primary-container": "#eeefff",
+                        "tertiary-container": "#007d55",
+                        "surface-variant": "#e0e3e5",
+                        "on-secondary-container": "#684000",
+                        "surface-tint": "#0053db",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-tertiary-fixed": "#002113",
+                        "inverse-primary": "#b4c5ff",
+                        "outline-variant": "#c3c6d7",
+                        "on-secondary-fixed": "#2a1700",
+                        "surface-container-highest": "#e0e3e5",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "xxl": "48px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "margin-desktop": "32px",
+                        "lg": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "metadata": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-kpi": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "metadata": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-kpi": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d8dadc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c3c6d7; }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen w-full flex overflow-hidden antialiased">
+<!-- SideNavBar (Semantic Shell) -->
+<nav class="hidden md:flex flex-col h-full py-lg px-md bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant w-64 shrink-0 z-50">
+<div class="flex items-center gap-sm mb-xl px-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container icon-fill">two_wheeler</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary tracking-tight">MotoPro</h1>
+<p class="font-metadata text-metadata text-on-surface-variant">Premium Management</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary rounded-[10px] py-2 px-4 font-label-sm text-label-sm flex items-center justify-center gap-2 mb-lg hover:bg-primary/90 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Service Order
+        </button>
+<div class="flex-1 overflow-y-auto space-y-1 pr-1">
+<!-- Navigation Items. 'Vehicles' is Active. -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                Booking
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">build_circle</span>
+                Service Orders
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">groups</span>
+                Customers
+            </a>
+<!-- ACTIVE TAB -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary-container text-on-primary-container font-semibold transition-colors duration-200 active:scale-95 font-body-md text-body-md shadow-sm" href="#">
+<span class="material-symbols-outlined icon-fill">motorcycle</span>
+                Vehicles
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">engineering</span>
+                Mechanics
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">handyman</span>
+                Spare Parts
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Cashier
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+                Transactions
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">assessment</span>
+                Reports
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">history</span>
+                Logs
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 relative">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-16 px-xl sticky top-0 z-40 w-full bg-surface-container-lowest/80 dark:bg-inverse-surface/80 border-b border-outline-variant backdrop-blur-md shadow-sm">
+<div class="flex items-center w-96 max-w-full relative focus-within:ring-2 focus-within:ring-primary rounded-lg">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-0" placeholder="Search vehicles, orders, parts..." type="text">
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-dim overflow-hidden border border-outline-variant ml-sm cursor-pointer hover:border-primary transition-colors">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A close up professional headshot of a workshop manager with a subtle smile, clean well-lit environment, modern corporate aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfcuDnv9sknIzpkI3hTAb7mPRrCw7e7UvUkf7a2gteiZUmUUQ8jLmeFufT5CVrV7aVTOsJrcL610actqP70jHsDAjlexfejzhk5124ZPy3lPM1eVfYUEBPZtceMCJCA59EUJ6KwgBFQAJF8bcLNxYHWMxXDz8pgfFOX7_JqpK8yav33AR49jeM5oiLfp-5X4iWM0c4fSf-TUfvOvAK1HAjiNEijkHQL4_sVyt91op2HbNKQxaW9_CJp9PnRZCeb5Vsz4X7dkIMWLrI">
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-desktop bg-surface">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-xl">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-md">B 4832 UZT</span>
+<span class="text-on-surface-variant text-sm">•</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">person</span> Andi Pratama
+                        </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Honda Vario 160</h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-transparent border border-outline-variant text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-[10px] hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit Kendaraan
+                    </button>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm px-4 py-2 rounded-[10px] hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+                        Buat Booking
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+<!-- Left Column (Wider Content) -->
+<div class="xl:col-span-8 space-y-gutter">
+<!-- Informasi Kendaraan -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center gap-2 mb-md border-b border-surface-container pb-sm">
+<span class="material-symbols-outlined text-on-surface-variant">info</span>
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Informasi Kendaraan</h3>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Brand</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">Honda</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Model</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">Vario 160</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Variant</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">CBS-ISS</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Year</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">2023</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Color</p>
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-zinc-800 border border-outline-variant"></div>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">Matte Black</p>
+</div>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Transmission</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">Automatic (CVT)</p>
+</div>
+<div class="col-span-2 md:col-span-1 border-t border-surface-container pt-4 md:border-none md:pt-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Frame Number (VIN)</p>
+<p class="font-body-md text-body-md font-mono text-on-surface bg-surface-container-low px-2 py-1 rounded inline-block">MH1JM3120PK123456</p>
+</div>
+<div class="col-span-2 md:col-span-2 border-t border-surface-container pt-4 md:border-none md:pt-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Engine Number</p>
+<p class="font-body-md text-body-md font-mono text-on-surface bg-surface-container-low px-2 py-1 rounded inline-block">JM31E-1123456</p>
+</div>
+</div>
+</div>
+<!-- Riwayat Service (Timeline Style) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">build</span>
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Riwayat Service</h3>
+</div>
+<button class="text-primary font-label-sm text-label-sm hover:underline">View All</button>
+</div>
+<div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-outline-variant before:via-outline-variant/50 before:to-transparent">
+<!-- Timeline Item 1 -->
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+<div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-primary bg-surface-container-lowest shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10">
+<span class="material-symbols-outlined text-primary text-[20px] icon-fill">check_circle</span>
+</div>
+<div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-outline-variant bg-surface-container-lowest shadow-sm hover:border-primary transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div class="font-label-sm text-label-sm text-on-surface-variant">15 May 2024</div>
+<span class="bg-[#e6f4ea] text-[#137333] font-label-sm text-label-sm px-2 py-0.5 rounded-full border border-[#ceead6]">Selesai</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-1">SO-260515-018</h4>
+<div class="bg-surface-container-low rounded-lg p-3 my-3 space-y-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant mt-0.5">home_repair_service</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-tight">Servis Berkala &amp; Ganti Oli</p>
+<p class="font-metadata text-metadata text-on-surface-variant">Mechanic: Rizky</p>
+</div>
+</div>
+<div class="flex items-start gap-2 border-t border-outline-variant/30 pt-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant mt-0.5">inventory_2</span>
+<p class="font-body-md text-body-md text-on-surface-variant leading-tight">Federal Oil Matic 10W-30 (0.8L), Filter Udara Vario 160</p>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2 border-t border-surface-container pt-3">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Odo: 18.420 km</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">Rp 185.000</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+<div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-outline-variant bg-surface-container-lowest shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10">
+<span class="material-symbols-outlined text-outline-variant text-[20px]">check_circle</span>
+</div>
+<div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-outline-variant bg-surface-container-lowest opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-2">
+<div class="font-label-sm text-label-sm text-on-surface-variant">02 Feb 2024</div>
+<span class="bg-[#e6f4ea] text-[#137333] font-label-sm text-label-sm px-2 py-0.5 rounded-full border border-[#ceead6]">Selesai</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-1">SO-260202-008</h4>
+<div class="bg-surface-container-low rounded-lg p-3 my-3 space-y-2">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant mt-0.5">home_repair_service</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-tight">Ganti Kampas Rem &amp; Cek CVT</p>
+<p class="font-metadata text-metadata text-on-surface-variant">Mechanic: Budi</p>
+</div>
+</div>
+<div class="flex items-start gap-2 border-t border-outline-variant/30 pt-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant mt-0.5">inventory_2</span>
+<p class="font-body-md text-body-md text-on-surface-variant leading-tight">Kampas Rem Depan (Original), Grease CVT</p>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2 border-t border-surface-container pt-3">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Odo: 14.200 km</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">Rp 120.000</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Contextual Data) -->
+<div class="xl:col-span-4 space-y-gutter">
+<!-- Rekomendasi Service (Glassmorphism highlight) -->
+<div class="relative overflow-hidden rounded-xl border border-outline-variant shadow-sm p-lg">
+<!-- Abstract Background Hint -->
+<div class="absolute inset-0 bg-primary-fixed opacity-30 pointer-events-none"></div>
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary blur-3xl opacity-20 rounded-full"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">campaign</span>
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Rekomendasi Service</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Berdasarkan riwayat dan pemakaian, kendaraan ini akan membutuhkan servis berikutnya segera.</p>
+<div class="bg-surface-container-lowest/80 backdrop-blur-md rounded-lg p-4 border border-outline-variant/50">
+<div class="flex justify-between items-end mb-2">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Target (20.000 km)</p>
+<p class="font-headline-lg text-headline-lg text-on-surface font-bold">1.580 <span class="font-body-md text-body-md font-normal text-on-surface-variant">km lagi</span></p>
+</div>
+<span class="material-symbols-outlined text-primary text-[32px] opacity-20">speed</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-highest rounded-full h-2.5 mb-1 mt-4">
+<div class="bg-primary h-2.5 rounded-full" style="width: 92%"></div>
+</div>
+<div class="flex justify-between font-metadata text-metadata text-on-surface-variant">
+<span>Current: 18.420 km</span>
+<span>Next: 20.000 km</span>
+</div>
+</div>
+<button class="w-full mt-4 bg-primary-container text-on-primary-container font-label-sm text-label-sm py-2 rounded-lg hover:bg-primary hover:text-on-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">event_available</span>
+                                Jadwalkan Sekarang
+                            </button>
+</div>
+</div>
+<!-- Owner Information -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center gap-2 mb-md border-b border-surface-container pb-sm">
+<span class="material-symbols-outlined text-on-surface-variant">badge</span>
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Owner Info</h3>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-surface-dim flex items-center justify-center border border-outline-variant overflow-hidden shrink-0">
+<span class="material-symbols-outlined text-[28px] text-on-surface-variant">person</span>
+<!-- Optional Image if available -->
+<!-- <img src="placeholder" data-alt="..." class="w-full h-full object-cover"> -->
+</div>
+<div class="flex-1">
+<h4 class="font-headline-md text-headline-md text-on-surface font-bold">Andi Pratama</h4>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">call</span>
+                                    +62 812-3456-7890
+                                </p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container flex gap-2">
+<button class="flex-1 bg-surface-container-high text-on-surface font-label-sm text-label-sm py-2 rounded-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+                                WhatsApp
+                            </button>
+<button class="flex-1 bg-surface-container-high text-on-surface font-label-sm text-label-sm py-2 rounded-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">history</span>
+                                All Vehicles
+                            </button>
+</div>
+</div>
+<!-- Odometer History Snippet -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">route</span>
+                                Odometer Log
+                            </h3>
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">open_in_new</span></button>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-surface-container last:border-0">
+<span class="font-body-md text-body-md text-on-surface-variant">15 May 2024</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">18.420 km</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-container last:border-0">
+<span class="font-body-md text-body-md text-on-surface-variant">02 Feb 2024</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">14.200 km</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-container last:border-0">
+<span class="font-body-md text-body-md text-on-surface-variant">10 Nov 2023</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">9.850 km</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom spacing -->
+<div class="h-xl"></div>
+</main>
+</div>
+</body></html>

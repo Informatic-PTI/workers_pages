@@ -1,0 +1,405 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Notifikasi - Irwan Motor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f2f4f6",
+                      "inverse-on-surface": "#eff1f3",
+                      "surface-tint": "#0053db",
+                      "surface-dim": "#d8dadc",
+                      "surface-bright": "#f7f9fb",
+                      "secondary-fixed": "#ffddb8",
+                      "on-primary": "#ffffff",
+                      "tertiary": "#006242",
+                      "on-tertiary-fixed": "#002113",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#e0e3e5",
+                      "on-surface-variant": "#434655",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed": "#00174b",
+                      "tertiary-container": "#007d55",
+                      "secondary-container": "#fea619",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "on-surface": "#191c1e",
+                      "secondary": "#855300",
+                      "surface-container": "#eceef0",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "primary": "#004ac6",
+                      "on-tertiary-container": "#bdffdb",
+                      "on-primary-container": "#eeefff",
+                      "on-secondary-container": "#684000",
+                      "primary-fixed": "#dbe1ff",
+                      "inverse-surface": "#2d3133",
+                      "outline-variant": "#c3c6d7",
+                      "outline": "#737686",
+                      "background": "#f7f9fb",
+                      "primary-container": "#2563eb",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "surface": "#f7f9fb",
+                      "surface-container-highest": "#e0e3e5",
+                      "inverse-primary": "#b4c5ff",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed": "#6ffbbe",
+                      "on-secondary-fixed": "#2a1700",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface-container-high": "#e6e8ea",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "on-background": "#191c1e",
+                      "primary-fixed-dim": "#b4c5ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "xxl": "48px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "metadata": [
+                              "Inter"
+                      ],
+                      "display-kpi": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "metadata": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-kpi": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full flex flex-col py-md w-64 border-r border-outline-variant bg-surface-container-lowest hidden md:flex z-20">
+<div class="px-lg pb-lg">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Irwan Motor</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">Workshop Management</p>
+</div>
+<div class="flex-1 overflow-y-auto px-sm">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm text-label-sm">Booking</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<span class="font-label-sm text-label-sm">Service Order</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm">Customers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="motorcycle">motorcycle</span>
+<span class="font-label-sm text-label-sm">Vehicles</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+<span class="font-label-sm text-label-sm">Mechanics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-sm text-label-sm">Spare Parts</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-sm text-label-sm">Cashier</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-sm text-label-sm">Transactions</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-sm text-label-sm">Activity Logs</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-low mb-xs scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-sm text-label-sm">Notifications</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors mb-xs" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</div>
+<div class="px-md mt-auto pt-md border-t border-outline-variant">
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="A small circular avatar placeholder for a user profile in a digital dashboard interface. Clean, bright, and minimal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGlzzRKqnJdm4r0egtdsMBW6J7OcCRBZhu7WceTjfT5BZbrckQnn1hrtNPmiLHcN9hXvV9kgfnJNMuhLhSgRjyKscFIRt1abB2anter4YoriwBOazLvurHQ91exY2X7hkwiS-Pbm0rthUZVM83JArZmPNWSN7x6WnPapoVFW3RU5Fcnl9cJrh5V8Li_jCehDroVysXVNOY1s1hLAbztrDBJkNPuYOBN69x0ywzvbuOX0bZEEGy0wdETDYyYlP4h-lat5GzsmZIwPvV">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Manager</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-64 relative h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 w-full px-margin-mobile md:px-margin-desktop bg-surface-bright/80 backdrop-blur-md border-b border-outline-variant shadow-sm z-10 shrink-0 sticky top-0">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined md:hidden cursor-pointer" data-icon="menu">menu</span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Notifikasi</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-xl pr-md py-sm rounded-lg border border-outline-variant bg-surface-container-lowest text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all w-64" placeholder="Cari notifikasi..." type="text">
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="help">help</button>
+<button class="bg-primary-container text-on-primary font-label-sm text-label-sm px-md py-sm rounded-lg hover:opacity-90 transition-opacity hidden md:block">Quick Create</button>
+<img class="w-8 h-8 rounded-full object-cover md:hidden" data-alt="A small circular avatar placeholder for a user profile in a digital dashboard interface. Clean, bright, and minimal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIpmNny96oGdxpD1SdKF_WJ6zIPGRQq9nQWpKxkVVbI-OuOcrWFfBs_k5jM5DwltWeuLL8qCkPIvO0TW2xcya0LGPGxDKDrG4syYcffTM31jnU1r0pWmOrcdnADuom8YjwubMM0dtFelhNl0Xz1Q-Vu1oiT55Qhoj1hYx4i5WGMhxFYLRbVzVn5U6bH1SfUqVFXl7SciZoitVS5_ujb15jCkfPXpfvBfZlhmFDduH8EhzDlh-2eKNgh3MN-zqGOJf5jyR-KOacsKb6">
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto bg-surface p-margin-mobile md:p-margin-desktop">
+<div class="max-w-5xl mx-auto space-y-lg">
+<!-- Summary Widgets (Glassmorphism) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant rounded-xl p-lg shadow-sm flex items-center justify-between relative overflow-hidden">
+<div class="absolute inset-0 border border-white/40 rounded-xl pointer-events-none"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-xs">Belum Dibaca</p>
+<p class="font-display-kpi text-display-kpi text-on-surface">12</p>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="mark_email_unread">mark_email_unread</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant rounded-xl p-lg shadow-sm flex items-center justify-between relative overflow-hidden">
+<div class="absolute inset-0 border border-white/40 rounded-xl pointer-events-none"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-xs">Hari Ini</p>
+<p class="font-display-kpi text-display-kpi text-on-surface">34</p>
+</div>
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="today">today</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant rounded-xl p-lg shadow-sm flex items-center justify-between relative overflow-hidden">
+<div class="absolute inset-0 border border-white/40 rounded-xl pointer-events-none"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-xs">Prioritas Tinggi</p>
+<p class="font-display-kpi text-display-kpi text-error">4</p>
+</div>
+<div class="w-12 h-12 rounded-full bg-error-container/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="priority_high">priority_high</span>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex overflow-x-auto pb-sm gap-sm no-scrollbar border-b border-outline-variant">
+<button class="font-label-sm text-label-sm text-primary font-bold border-b-2 border-primary pb-1 whitespace-nowrap px-sm">Semua</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap px-sm">Operasional</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap px-sm">Booking</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap px-sm">Service</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap px-sm">Inventori</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap px-sm">Pembayaran</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap px-sm">Sistem</button>
+</div>
+<!-- Notification Feed -->
+<div class="space-y-lg">
+<!-- Hari Ini -->
+<div>
+<h3 class="font-label-sm text-label-sm text-outline mb-sm uppercase tracking-wider">Hari Ini</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden divide-y divide-outline-variant">
+<!-- Item 1 (Unread, High Priority) -->
+<div class="p-md flex gap-md hover:bg-surface-bright transition-colors cursor-pointer bg-primary/5">
+<div class="shrink-0 mt-xs relative">
+<div class="w-10 h-10 rounded-full bg-error-container/30 flex items-center justify-center border border-error/20">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div class="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Stok Oli Mesin Menipis</h4>
+<span class="font-metadata text-metadata text-outline whitespace-nowrap ml-md">10:30 AM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Stok Yamalube Super Sport tersisa 2 botol. Segera lakukan re-order untuk menghindari kehabisan.</p>
+<div class="flex gap-sm">
+<button class="font-label-sm text-label-sm px-sm py-xs border border-outline-variant rounded bg-surface hover:border-primary text-on-surface transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="inventory_2">inventory_2</span>
+                                            Lihat Sparepart
+                                        </button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-md flex gap-md hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="shrink-0 mt-xs">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="build">build</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Service Selesai: B 1234 ABC</h4>
+<span class="font-metadata text-metadata text-outline whitespace-nowrap ml-md">09:15 AM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Mekanik Budi telah menyelesaikan service berkala untuk Honda Vario 150. Menunggu konfirmasi pembayaran.</p>
+<div class="flex gap-sm">
+<button class="font-label-sm text-label-sm px-sm py-xs border border-outline-variant rounded bg-surface hover:border-primary text-on-surface transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="payments">payments</span>
+                                            Proses Pembayaran
+                                        </button>
+<button class="font-label-sm text-label-sm px-sm py-xs border border-transparent rounded text-primary hover:bg-primary/5 transition-colors">
+                                            Hubungi Pelanggan
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Kemarin -->
+<div>
+<h3 class="font-label-sm text-label-sm text-outline mb-sm uppercase tracking-wider">Kemarin</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden divide-y divide-outline-variant">
+<!-- Item 3 -->
+<div class="p-md flex gap-md hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="shrink-0 mt-xs">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center border border-tertiary/20">
+<span class="material-symbols-outlined text-tertiary" data-icon="calendar_today">calendar_today</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Booking Baru: Yamaha NMAX</h4>
+<span class="font-metadata text-metadata text-outline whitespace-nowrap ml-md">Kemarin, 16:45</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Pelanggan Andi Susanto melakukan booking untuk ganti ban besok pukul 10:00 AM.</p>
+<div class="flex gap-sm">
+<button class="font-label-sm text-label-sm px-sm py-xs border border-outline-variant rounded bg-surface hover:border-primary text-on-surface transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="visibility">visibility</span>
+                                            Lihat Booking
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<style>
+        /* Hide scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</body></html>
