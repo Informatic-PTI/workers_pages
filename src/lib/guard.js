@@ -42,7 +42,7 @@ export async function resetRateLimit(env, key) {
 }
 
 export async function getRateLimitState(env, key, windowSeconds, maxAttempts) {
-	if (!env.AUTH_RATE_LIMITER) return { ok: true, skipped: true, state: null };
+	if (!env.AUTH_RATE_LIMITER) return { ok: true, allowed: true, skipped: true, state: null, retry_after_seconds: 0 };
 	const id = env.AUTH_RATE_LIMITER.idFromName(key);
 	const stub = env.AUTH_RATE_LIMITER.get(id);
 	const res = await stub.fetch("https://rate-limit/check", {

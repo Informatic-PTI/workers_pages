@@ -13,6 +13,14 @@ export async function verifyLoginOtp(challengeId, otp, remember = true) {
 	return data;
 }
 
+export function getOtpStatus(challengeId) {
+	return authApi.get(`/otp/status?challenge_id=${encodeURIComponent(challengeId)}`);
+}
+
+export function resendLoginOtp(challengeId) {
+	return authApi.post("/otp/resend", { challenge_id: challengeId });
+}
+
 export async function loadProfile() {
 	const profile = await authApi.get("/me");
 	saveProfile(profile);
