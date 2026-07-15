@@ -1,5 +1,15 @@
 import { createPasswordCredential, findUserAndPasswordCredentialByIdentifier } from "../db/credentials.js";
-import { createOtpChallenge, getOtpChallenge, incrementOtpAttempt, markOtpUsed } from "../db/otpChallenges.js";
+import {
+	createOtpChallenge,
+	expireOtpChallenge,
+	getOtpChallenge,
+	incrementOtpAttempt,
+	markOtpDeliveryFailed,
+	markOtpQueued,
+	markOtpSending,
+	markOtpSent,
+	markOtpUsed,
+} from "../db/otpChallenges.js";
 import { hasPermission, permissionsForUser, rolesForUser } from "../db/permissions.js";
 import { createRefreshToken, findRefreshTokenByPlaintext, revokeRefreshTokenFamily, revokeRefreshTokensBySession, revokeRefreshTokensByUser, rotateRefreshToken } from "../db/refreshTokens.js";
 import { createSession, listSessionsForUser, revokeSession, revokeUserSessions, touchSession } from "../db/sessions.js";
@@ -35,33 +45,98 @@ function background(ctx, promise) {
 	return Promise.resolve();
 }
 
-async function enqueueOtpDelivery(env, ctx, payload, auditBase) {
-	return background(ctx, (async () => {
+async function bestEffortAudit(env, event) {
+	try { await auditEvent(env, event); } catch { /* Delivery must not be duplicated because its audit write failed. */ }
+}
+
+export async function enqueueOtpDelivery(env, payload, auditBase = {}) {
+	const target = { target_type: "otp_challenge", target_id: payload.challenge_id };
+	let queueError = null;
+	if (env.OTP_QUEUE?.send) {
 		try {
-			if (env.OTP_QUEUE) {
-				await env.OTP_QUEUE.send(payload);
-				await auditEvent(env, { ...auditBase, event_type: "otp_delivery_queued", outcome: "success" });
-			} else if (String(env.ENABLE_DIRECT_OTP_FALLBACK || "true") === "true") {
-				const { sendWhatsAppOtp } = await import("../lib/gowa.js");
-				await sendWhatsAppOtp(env, {
-					phone: payload.phone,
-					otp: payload.otp,
-					purpose: payload.purpose,
-					requestId: payload.request_id,
-				});
-				await auditEvent(env, { ...auditBase, event_type: "otp_delivery_success", outcome: "success" });
-			} else {
-				await auditEvent(env, { ...auditBase, event_type: "otp_delivery_queue_failed", outcome: "failure", reason_code: "otp_delivery_unavailable" });
-			}
+			// Awaiting send is intentional: a challenge is only returned after Cloudflare accepts it.
+			await env.OTP_QUEUE.send(payload);
 		} catch (error) {
-			await auditEvent(env, {
+			queueError = error;
+			await bestEffortAudit(env, {
 				...auditBase,
+				...target,
 				event_type: "otp_delivery_queue_failed",
 				outcome: "failure",
-				reason_code: error?.message || "otp_delivery_failed",
+				reason_code: error?.message || "otp_queue_failed",
 			});
 		}
-	})());
+		if (!queueError) {
+			try { await markOtpQueued(env, payload.challenge_id); } catch { /* Consumer also updates the delivery state. */ }
+			await bestEffortAudit(env, { ...auditBase, ...target, event_type: "otp_delivery_queued", outcome: "success" });
+			return { delivery_status: "queued", delivery_mode: "queue" };
+		}
+	}
+
+	if (String(env.ENABLE_DIRECT_OTP_FALLBACK || "true") === "true") {
+		try {
+			const { sendWhatsAppOtp } = await import("../lib/gowa.js");
+			await markOtpSending(env, payload.challenge_id);
+			await sendWhatsAppOtp(env, {
+				phone: payload.phone,
+				otp: payload.otp,
+				purpose: payload.purpose,
+				requestId: payload.request_id,
+			});
+			try { await markOtpSent(env, payload.challenge_id); } catch { /* GOWA already accepted the message. */ }
+			await bestEffortAudit(env, {
+				...auditBase,
+				...target,
+				event_type: "otp_delivery_success",
+				outcome: "success",
+				metadata: { delivery_mode: queueError ? "direct_fallback" : "direct" },
+			});
+			return { delivery_status: "sent", delivery_mode: queueError ? "direct_fallback" : "direct" };
+		} catch (error) {
+			await markOtpDeliveryFailed(env, payload.challenge_id, error);
+			await bestEffortAudit(env, {
+				...auditBase,
+				...target,
+				event_type: "gowa_otp_send_failed",
+				outcome: "failure",
+				reason_code: error?.message || "gowa_send_failed",
+			});
+			throw httpError("otp_delivery_failed", "OTP tidak dapat dikirim ke WhatsApp", 503, payload.request_id, {
+				challenge_id: payload.challenge_id,
+				delivery_status: "failed",
+			});
+		}
+	}
+
+	const unavailable = queueError || new Error("otp_delivery_unavailable");
+	await markOtpDeliveryFailed(env, payload.challenge_id, unavailable);
+	throw httpError("otp_delivery_failed", "Layanan pengiriman OTP tidak tersedia", 503, payload.request_id, {
+		challenge_id: payload.challenge_id,
+		delivery_status: "failed",
+	});
+}
+
+function timestampMs(value) {
+	if (!value) return Number.NaN;
+	const text = String(value);
+	return Date.parse(/[zZ]|[+-]\d\d:\d\d$/.test(text) ? text : `${text.replace(" ", "T")}Z`);
+}
+
+function otpPublicStatus(challenge, cooldownSeconds) {
+	const expiresIn = Math.max(0, Math.ceil((timestampMs(challenge.expires_at) - Date.now()) / 1000));
+	const retryAfter = Math.max(0, Math.ceil((timestampMs(challenge.created_at) + (cooldownSeconds * 1000) - Date.now()) / 1000));
+	return {
+		challenge_id: challenge.id,
+		purpose: challenge.purpose,
+		phone: maskPhone(challenge.phone),
+		delivery_status: challenge.delivery_status || "pending",
+		delivery_attempts: Number(challenge.delivery_attempts || 0),
+		expires_in: expiresIn,
+		expired: expiresIn <= 0 || Boolean(challenge.used_at),
+		can_resend: retryAfter <= 0 && expiresIn > 0 && !challenge.used_at,
+		retry_after_seconds: retryAfter,
+		sent_at: challenge.sent_at || null,
+	};
 }
 
 async function authResponse(env, user, sessionId, refreshFamilyId = null) {
@@ -113,9 +188,9 @@ async function startOtp(env, ctx, request, request_id, purpose) {
 		expires_at: addSeconds(otpTtl),
 	});
 	const payload = { type: "otp_delivery", phone, otp, purpose, challenge_id: challengeId, request_id };
-	await enqueueOtpDelivery(env, ctx, payload, { request_id, ip_hash: meta.ip_hash, user_id: user?.id });
+	const delivery = await enqueueOtpDelivery(env, payload, { request_id, ip_hash: meta.ip_hash, user_id: user?.id });
 	await background(ctx, auditEvent(env, { event_type: purpose === "login" ? "login_started" : "register_started", outcome: "success", request_id, ip_hash: meta.ip_hash, user_id: user?.id }));
-	return ok({ challenge_id: challengeId, expires_in: otpTtl, phone: maskPhone(phone) }, request_id);
+	return ok({ otp_required: true, challenge_id: challengeId, expires_in: otpTtl, retry_after_seconds: otpCooldown, phone: maskPhone(phone), ...delivery }, request_id);
 }
 
 async function startRegistration(env, ctx, request, request_id) {
@@ -156,19 +231,21 @@ async function startRegistration(env, ctx, request, request_id) {
 		}),
 	});
 	const payload = { type: "otp_delivery", phone, otp, purpose: "register", challenge_id: challengeId, request_id };
-	await enqueueOtpDelivery(env, ctx, payload, { request_id, ip_hash: meta.ip_hash });
+	const delivery = await enqueueOtpDelivery(env, payload, { request_id, ip_hash: meta.ip_hash });
 	await background(ctx, auditEvent(env, { event_type: "register_started", outcome: "success", request_id, ip_hash: meta.ip_hash, metadata: { email, phone: maskPhone(phone) } }));
 	return ok({
 		otp_required: true,
 		challenge_id: challengeId,
 		expires_in: otpTtl,
+		retry_after_seconds: otpCooldown,
 		phone: maskPhone(phone),
+		...delivery,
 		next: "/auth/register/verify",
 	}, request_id);
 }
 
 async function queueLoginOtp(env, ctx, { user, request_id, meta }) {
-	if (!user.phone) throw httpError("otp_phone_required", "User phone is required for OTP login", 400, request_id);
+	if (!user.phone) throw httpError("otp_phone_required", "Nomor WhatsApp akun wajib diisi untuk login OTP", 400, request_id);
 	const otpCooldown = await getNumberSetting(env, "otp_resend_cooldown_seconds");
 	const otpTtl = await getNumberSetting(env, "otp_ttl_seconds");
 	const otpMaxAttempts = await getNumberSetting(env, "otp_max_attempts");
@@ -186,14 +263,78 @@ async function queueLoginOtp(env, ctx, { user, request_id, meta }) {
 		expires_at: addSeconds(otpTtl),
 	});
 	const payload = { type: "otp_delivery", phone: user.phone, otp, purpose: "login", challenge_id: challengeId, request_id };
-	await enqueueOtpDelivery(env, ctx, payload, { request_id, ip_hash: meta.ip_hash, user_id: user.id });
+	const delivery = await enqueueOtpDelivery(env, payload, { request_id, ip_hash: meta.ip_hash, user_id: user.id });
 	await background(ctx, auditEvent(env, { event_type: "login_password_success", outcome: "success", request_id, user_id: user.id, ip_hash: meta.ip_hash, metadata: { next_step: "otp_verify" } }));
 	return ok({
 		otp_required: true,
 		challenge_id: challengeId,
 		expires_in: otpTtl,
+		retry_after_seconds: otpCooldown,
 		phone: maskPhone(user.phone),
+		...delivery,
 		next: "/auth/login/verify",
+	}, request_id);
+}
+
+async function otpStatus(env, request, request_id) {
+	const challengeId = new URL(request.url).searchParams.get("challenge_id");
+	if (!challengeId) throw httpError("validation_error", "challenge_id wajib diisi", 400, request_id);
+	const challenge = await getOtpChallenge(env, challengeId);
+	if (!challenge) throw httpError("not_found", "Challenge OTP tidak ditemukan", 404, request_id);
+	const cooldown = await getNumberSetting(env, "otp_resend_cooldown_seconds");
+	return ok(otpPublicStatus(challenge, cooldown), request_id);
+}
+
+async function resendOtp(env, request, request_id) {
+	const body = await readJson(request, request_id);
+	const current = await getOtpChallenge(env, body.challenge_id);
+	if (!current || current.used_at || timestampMs(current.expires_at) <= Date.now() || !["login", "register"].includes(current.purpose)) {
+		throw httpError("invalid_otp_challenge", "Challenge OTP sudah tidak berlaku", 400, request_id);
+	}
+	const [otpCooldown, otpTtl, otpMaxAttempts] = await Promise.all([
+		getNumberSetting(env, "otp_resend_cooldown_seconds"),
+		getNumberSetting(env, "otp_ttl_seconds"),
+		getNumberSetting(env, "otp_max_attempts"),
+	]);
+	const limit = await getRateLimitState(env, `ratelimit:otp:phone:${current.phone}`, otpCooldown, 1);
+	if (!limit.allowed) {
+		return fail("rate_limited", "Tunggu sebelum mengirim ulang OTP", request_id, 429, {
+			retry_after_seconds: limit.retry_after_seconds,
+			challenge_id: current.id,
+		});
+	}
+	const challengeId = newOtpChallengeId();
+	const otp = generateOtp();
+	await createOtpChallenge(env, {
+		id: challengeId,
+		phone: current.phone,
+		user_id: current.user_id,
+		purpose: current.purpose,
+		otp_hash: await hashOtp(env, challengeId, otp),
+		max_attempts: otpMaxAttempts,
+		expires_at: addSeconds(otpTtl),
+		metadata_json: current.metadata_json || null,
+	});
+	const meta = await requestMeta(request);
+	const payload = { type: "otp_delivery", phone: current.phone, otp, purpose: current.purpose, challenge_id: challengeId, request_id };
+	const delivery = await enqueueOtpDelivery(env, payload, { request_id, ip_hash: meta.ip_hash, user_id: current.user_id });
+	await expireOtpChallenge(env, current.id);
+	await bestEffortAudit(env, {
+		event_type: "otp_resent",
+		outcome: "success",
+		request_id,
+		user_id: current.user_id,
+		ip_hash: meta.ip_hash,
+		target_type: "otp_challenge",
+		target_id: challengeId,
+	});
+	return ok({
+		otp_required: true,
+		challenge_id: challengeId,
+		expires_in: otpTtl,
+		retry_after_seconds: otpCooldown,
+		phone: maskPhone(current.phone),
+		...delivery,
 	}, request_id);
 }
 
@@ -283,6 +424,8 @@ export async function handleAuth(request, env, ctx, request_id, parts) {
 
 	if (method === "POST" && leaf === "register/password") return startRegistration(env, ctx, request, request_id);
 	if (method === "POST" && leaf === "login/start") return startOtp(env, ctx, request, request_id, "login");
+	if (method === "GET" && leaf === "otp/status") return otpStatus(env, request, request_id);
+	if (method === "POST" && leaf === "otp/resend") return resendOtp(env, request, request_id);
 	if (method === "POST" && leaf === "register/verify") return verifyOtp(env, request, request_id, "register");
 	if (method === "POST" && leaf === "login/verify") return verifyOtp(env, request, request_id, "login");
 

@@ -586,6 +586,8 @@ export function handleDashboard() {
 				<label>Password<input id="password" type="password" autocomplete="current-password"></label>
 				<div id="otpWrap" class="hidden">
 					<label>OTP<input id="otp" inputmode="numeric" autocomplete="one-time-code"></label>
+					<div id="otpDeliveryStatus" class="sub" role="status">Menyiapkan OTP...</div>
+					<button id="resendOtpBtn" type="button">Kirim ulang OTP</button>
 				</div>
 				<button id="loginBtn" class="primary">Login</button>
 			</div>
@@ -621,6 +623,7 @@ export function handleDashboard() {
 			accessToken: sessionStorage.getItem("irwanmotor.auth.access") || "",
 			refreshToken: sessionStorage.getItem("irwanmotor.auth.refresh") || "",
 			challengeId: "",
+			otpPollTimer: null,
 			actor: null,
 			view: "overview",
 			selectedUser: "",
@@ -703,9 +706,50 @@ export function handleDashboard() {
 		}
 
 		function showApp() {
+			stopOtpPolling();
 			$("login").classList.add("hidden");
 			$("app").classList.remove("hidden");
 			$("actor").textContent = state.actor ? state.actor.id + " - hyperuser" : "hyperuser";
+		}
+
+		function stopOtpPolling() {
+			if (state.otpPollTimer) clearInterval(state.otpPollTimer);
+			state.otpPollTimer = null;
+		}
+
+		function renderOtpDelivery(data) {
+			const messages = {
+				pending: "Menyiapkan OTP...",
+				queued: "OTP sudah masuk antrean WhatsApp.",
+				sending: "OTP sedang dikirim ke WhatsApp.",
+				retrying: "Pengiriman OTP sedang dicoba ulang.",
+				sent: "OTP berhasil dikirim ke WhatsApp.",
+				failed: "OTP gagal dikirim. Gunakan tombol kirim ulang.",
+			};
+			const status = data.delivery_status || "pending";
+			$("otpDeliveryStatus").textContent = messages[status] || messages.pending;
+			const wait = Math.max(0, Number(data.retry_after_seconds || 0));
+			$("resendOtpBtn").disabled = wait > 0 && !data.can_resend;
+			$("resendOtpBtn").textContent = wait > 0 ? "Kirim ulang (" + wait + " dtk)" : "Kirim ulang OTP";
+		}
+
+		async function pollOtpStatus() {
+			if (!state.challengeId) return;
+			try {
+				const res = await fetch("/auth/otp/status?challenge_id=" + encodeURIComponent(state.challengeId));
+				const data = await res.json();
+				if (!res.ok || !data.ok) return;
+				renderOtpDelivery(data);
+				if (data.expired) stopOtpPolling();
+			} catch {
+				// Status polling is informational; OTP verification stays available.
+			}
+		}
+
+		function startOtpPolling() {
+			stopOtpPolling();
+			pollOtpStatus();
+			state.otpPollTimer = setInterval(pollOtpStatus, 2000);
 		}
 
 		function renderNav() {
@@ -831,6 +875,7 @@ export function handleDashboard() {
 			$("usersList").innerHTML = renderTable(data.users || [], [
 				{ key: "id", label: "ID", render: (r) => '<button data-user="' + esc(r.id) + '">' + esc(r.id) + '</button>' },
 				{ key: "email", label: "Email" },
+				{ key: "phone", label: "Phone" },
 				{ key: "username", label: "Username" },
 				{ key: "status", label: "Status", render: (r) => badge(r.status) },
 				{ key: "is_hyperuser", label: "Hyper", render: (r) => badge(Boolean(r.is_hyperuser)) },
@@ -857,6 +902,7 @@ export function handleDashboard() {
 						'<label>Status<select id="nuStatus"><option>active</option><option>blocked</option><option>disabled</option></select></label>' +
 						'<label>Hyperuser<select id="nuHyper"><option value="false">false</option><option value="true">true</option></select></label>' +
 						'<label>Skip OTP<select id="nuSkipOtp"><option value="false">false</option><option value="true">true</option></select></label>' +
+						'<div class="sub full">Nomor WhatsApp wajib diisi jika Skip OTP = false.</div>' +
 						'<div class="full"><button id="createUserBtn" class="primary">Create User</button></div>' +
 					'</div>' +
 				'</section>';
@@ -916,6 +962,7 @@ export function handleDashboard() {
 							'<option value="false" ' + (!u.skip_otp ? "selected" : "") + '>false</option>' +
 							'<option value="true" ' + (u.skip_otp ? "selected" : "") + '>true</option>' +
 						'</select></label>' +
+						'<div class="sub full">Nomor WhatsApp wajib diisi jika Skip OTP = false.</div>' +
 						'<label>Refresh TTL days<input id="duRefresh" type="number" min="1" max="365" value="' + esc(u.refresh_token_ttl_days || "") + '"></label>' +
 						'<label>Access TTL seconds<input id="duAccess" type="number" min="60" max="86400" value="' + esc(u.access_token_ttl_seconds || "") + '"></label>' +
 						'<label class="full">Notes<textarea id="duNotes">' + esc(u.auth_notes || "") + '</textarea></label>' +
@@ -1080,6 +1127,10 @@ export function handleDashboard() {
 						{ key: "user_id", label: "User" },
 						{ key: "purpose", label: "Purpose" },
 						{ key: "attempt_count", label: "Attempts", render: (r) => esc(r.attempt_count) + "/" + esc(r.max_attempts) },
+						{ key: "delivery_status", label: "Delivery", render: (r) => badge(r.delivery_status) },
+						{ key: "delivery_attempts", label: "Send tries" },
+						{ key: "sent_at", label: "Sent" },
+						{ key: "delivery_error", label: "Delivery error" },
 						{ key: "expires_at", label: "Expires" },
 						{ key: "used_at", label: "Used" },
 						{ key: "id", label: "", render: (r) => '<button class="warn" data-otp="' + esc(r.id) + '">Expire</button>' },
@@ -1260,10 +1311,13 @@ export function handleDashboard() {
 						return;
 					}
 
+					if (!data.otp_required || !data.challenge_id) throw new Error("Server tidak memberikan challenge OTP");
 					state.challengeId = data.challenge_id;
 					$("otpWrap").classList.remove("hidden");
-					$("loginNotice").textContent = "OTP dikirim. Masukkan kode untuk lanjut.";
+					$("loginNotice").textContent = "Challenge OTP dibuat untuk " + (data.phone || "nomor terdaftar") + ".";
 					$("loginNotice").classList.remove("hidden");
+					renderOtpDelivery(data);
+					startOtpPolling();
 					return;
 				}
 
@@ -1285,11 +1339,40 @@ export function handleDashboard() {
 				sessionStorage.setItem("irwanmotor.auth.refresh", state.refreshToken);
 
 				state.challengeId = "";
+				stopOtpPolling();
 
 				await bootstrap();
 			} catch (error) {
 				$("loginNotice").textContent = error.message;
 				$("loginNotice").classList.remove("hidden");
+			}
+		};
+
+		$("resendOtpBtn").onclick = async () => {
+			if (!state.challengeId) return;
+			const button = $("resendOtpBtn");
+			button.disabled = true;
+			button.textContent = "Mengirim ulang...";
+			try {
+				const res = await fetch("/auth/otp/resend", {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify({ challenge_id: state.challengeId }),
+				});
+				const data = await res.json();
+				if (!res.ok || !data.ok) {
+					if (data.retry_after_seconds) renderOtpDelivery({ delivery_status: "retrying", retry_after_seconds: data.retry_after_seconds, can_resend: false });
+					throw new Error(data.message || data.code || "Gagal mengirim ulang OTP");
+				}
+				state.challengeId = data.challenge_id;
+				$("otp").value = "";
+				renderOtpDelivery(data);
+				startOtpPolling();
+			} catch (error) {
+				$("loginNotice").textContent = error.message;
+				$("loginNotice").classList.remove("hidden");
+			} finally {
+				pollOtpStatus();
 			}
 		};
 
@@ -1306,6 +1389,7 @@ export function handleDashboard() {
 		});
 
 		$("logoutBtn").onclick = () => {
+			stopOtpPolling();
 			sessionStorage.removeItem("irwanmotor.auth.access");
 			sessionStorage.removeItem("irwanmotor.auth.refresh");
 

@@ -175,7 +175,11 @@ async function createDashboardUser(request, env, request_id) {
 	const username = body.username ? String(body.username).trim() : null;
 	const password = body.password == null ? "" : String(body.password);
 	if (!email && !phone && !username) throw httpError("validation_error", "email, phone, or username is required", 400, request_id);
+	if (body.phone && !phone) throw httpError("validation_error", "Nomor WhatsApp tidak valid", 400, request_id);
 	if (password && password.length < 8) throw httpError("validation_error", "Password must be at least 8 characters", 400, request_id);
+	if (password && !body.settings?.skip_otp && !phone) {
+		throw httpError("otp_phone_required", "Nomor WhatsApp wajib diisi jika Skip OTP = false", 400, request_id);
+	}
 	if (await userConflict(env, { email, phone, username })) throw httpError("conflict", "User already exists", 409, request_id);
 	const id = body.id ? String(body.id).trim().slice(0, 32) : await generateUserId(env, body.id_prefix || "US");
 	const user = await createUser(env, {
@@ -194,6 +198,21 @@ async function createDashboardUser(request, env, request_id) {
 
 async function updateDashboardUser(request, env, request_id, userId) {
 	const body = await readJson(request, request_id);
+	const current = await env.AUTH_DB.prepare(
+		`SELECT u.phone, COALESCE(uas.skip_otp, 0) AS skip_otp
+		 FROM users u LEFT JOIN user_auth_settings uas ON uas.user_id = u.id WHERE u.id = ?`,
+	).bind(userId).first();
+	if (!current) return null;
+	const normalizedPhone = body.phone ? normalizePhone(body.phone) : null;
+	if (body.phone && !normalizedPhone) throw httpError("validation_error", "Nomor WhatsApp tidak valid", 400, request_id);
+	const effectivePhone = "phone" in body ? normalizedPhone : current.phone;
+	const requestedSkipOtp = body.settings?.skip_otp;
+	const effectiveSkipOtp = body.settings && "skip_otp" in body.settings
+		? requestedSkipOtp === true || requestedSkipOtp === 1 || requestedSkipOtp === "true" || requestedSkipOtp === "1"
+		: Boolean(current.skip_otp);
+	if (!effectiveSkipOtp && !effectivePhone) {
+		throw httpError("otp_phone_required", "Nomor WhatsApp wajib diisi jika Skip OTP = false", 400, request_id);
+	}
 	const fields = [];
 	const values = [];
 	if ("email" in body) {
@@ -340,7 +359,7 @@ async function handleDashboardAdmin(request, env, ctx, request_id, parts) {
 	}
 	if (method === "GET" && section === "otp") {
 		const rows = await env.AUTH_DB.prepare(
-			`SELECT id,phone,user_id,purpose,attempt_count,max_attempts,expires_at,used_at,created_at,metadata_json,substr(otp_hash,1,12) AS otp_hash_prefix
+			`SELECT id,phone,user_id,purpose,attempt_count,max_attempts,delivery_status,delivery_attempts,queued_at,sent_at,last_delivery_at,delivery_error,expires_at,used_at,created_at,metadata_json,substr(otp_hash,1,12) AS otp_hash_prefix
 			 FROM otp_challenges ORDER BY created_at DESC LIMIT ?`,
 		).bind(limitParam(request, 100, 500)).all();
 		return ok({
@@ -351,6 +370,12 @@ async function handleDashboardAdmin(request, env, ctx, request_id, parts) {
 				purpose: row.purpose,
 				attempt_count: row.attempt_count,
 				max_attempts: row.max_attempts,
+				delivery_status: row.delivery_status,
+				delivery_attempts: row.delivery_attempts,
+				queued_at: row.queued_at,
+				sent_at: row.sent_at,
+				last_delivery_at: row.last_delivery_at,
+				delivery_error: row.delivery_error,
 				expires_at: row.expires_at,
 				used_at: row.used_at,
 				created_at: row.created_at,

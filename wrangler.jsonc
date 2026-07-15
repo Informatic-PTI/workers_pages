@@ -35,6 +35,7 @@
 		"AUTH_ISSUER": "https://bengkel.irwanmotor.workers.dev",
 		"AUTH_AUDIENCE": "irwanmotor-services",
 		"GOWA_API_BASE": "https://gowa1.punya.top",
+		"GOWA_DEVICE_ID": "punyatop1",
 		"PASSWORD_PBKDF2_ITERATIONS": "100000",
 		"ENABLE_ADMIN_SEED": "false",
 		"ENABLE_DIRECT_OTP_FALLBACK": "true",
@@ -94,7 +95,8 @@
 			{
 				"queue": "irwanmotor-auth-otp",
 				"max_batch_size": 10,
-				"max_batch_timeout": 5
+				"max_batch_timeout": 5,
+				"max_retries": 5
 			},
 			{
 				"queue": "irwanmotor-auth-audit",
