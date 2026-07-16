@@ -47,6 +47,10 @@ if (!client.includes("apiPath(path)")) failures.push("API client does not use th
 if (!client.includes("response.status === 401")) failures.push("API client does not handle unauthorized responses.");
 const authService = readFileSync(join(jsRoot, "services", "auth.js"), "utf8");
 if (!authService.includes('authApi.post("/login/password"')) failures.push("Login does not call the existing password auth endpoint.");
+if (!authService.includes('authApi.post("/register/password"')) failures.push("Registration does not call the existing password registration endpoint.");
+if (!authService.includes('authApi.post("/register/verify"')) failures.push("Registration does not call the existing OTP verification endpoint.");
+const loginPage = readFileSync(join(jsRoot, "pages", "login.js"), "utf8");
+if (!loginPage.includes('id="register-form"') || !loginPage.includes('data-auth-view="register"')) failures.push("Login panel does not expose the registration flow.");
 if (!app.includes("shell(") || !app.includes("mountShell(")) failures.push("Shared authenticated application shell is not mounted by the router.");
 if (!app.includes("route.roles") || !app.includes("currentRoles()")) failures.push("Frontend route role checks are missing.");
 const shell = readFileSync(join(jsRoot, "components", "shell.js"), "utf8");
