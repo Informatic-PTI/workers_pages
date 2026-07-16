@@ -136,12 +136,14 @@ npx wrangler deploy --dry-run
 
 Frontend mengadaptasi kontrak auth yang sudah ada:
 
-1. `POST /auth/login/password` dengan `{ "identifier", "password" }`.
-2. Jika response berisi `otp_required`, frontend melanjutkan ke `POST /auth/login/verify` dengan `challenge_id` dan OTP.
-3. `access_token` disimpan di `sessionStorage`; refresh token dapat dipertahankan di `localStorage` bila pengguna memilih opsi ingat saya.
-4. Semua API aplikasi mengirim `Authorization: Bearer <ACCESS_TOKEN>`.
-5. `GET /auth/me` tetap kompatibel dan sekarang menambahkan daftar `roles` untuk navigasi Admin, Mechanic, atau Cashier.
-6. Access token kedaluwarsa sesuai konfigurasi lama; API client melakukan satu refresh terkoordinasi melalui `POST /auth/refresh`, lalu menghapus session jika refresh gagal.
+1. Panel login menyediakan tab daftar yang mengirim data akun ke `POST /auth/register/password` dan melanjutkan OTP ke `POST /auth/register/verify`.
+2. `POST /auth/login/password` menerima `{ "identifier", "password" }`.
+3. Jika response login berisi `otp_required`, frontend melanjutkan ke `POST /auth/login/verify` dengan `challenge_id` dan OTP.
+4. Status delivery dan pengiriman ulang OTP dipakai bersama oleh alur login maupun pendaftaran melalui endpoint auth lama.
+5. `access_token` disimpan di `sessionStorage`; refresh token dapat dipertahankan di `localStorage` bila pengguna memilih opsi ingat saya.
+6. Semua API aplikasi mengirim `Authorization: Bearer <ACCESS_TOKEN>`.
+7. `GET /auth/me` tetap kompatibel dan sekarang menambahkan daftar `roles` untuk navigasi Admin, Mechanic, atau Cashier.
+8. Access token kedaluwarsa sesuai konfigurasi lama; API client melakukan satu refresh terkoordinasi melalui `POST /auth/refresh`, lalu menghapus session jika refresh gagal.
 
 Endpoint auth, admin token API, serta hyperdashboard lama tetap didokumentasikan di `collection.md`.
 
