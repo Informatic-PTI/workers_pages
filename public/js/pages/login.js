@@ -140,7 +140,7 @@ export const loginPage = {
 	render() {
 		return `<main class="login-page">
 			<section class="login-panel" aria-labelledby="auth-title">
-				<div class="brand login-brand"><div class="brand-mark">IM</div><div><strong>Irwan Motor</strong><small>Workshop Management</small></div></div>
+				<div class="brand login-brand"><div class="brand-mark">21</div><div><strong>21 Motoshop</strong><small>Workshop Management</small></div></div>
 				<div class="auth-tabs" id="auth-tabs" role="tablist" aria-label="Pilih autentikasi">
 					<button class="auth-tab" id="login-tab" type="button" role="tab" aria-controls="login-form" aria-selected="true" data-auth-view="login">Masuk</button>
 					<button class="auth-tab" id="register-tab" type="button" role="tab" aria-controls="register-form" aria-selected="false" data-auth-view="register" tabindex="-1">Daftar</button>
