@@ -18,7 +18,7 @@ export const dashboardPage = {
 		const flow = Object.fromEntries((data.workflow || []).map((item) => [item.status, Number(item.total)]));
 		const columns = ["waiting", "inspection", "approval", "in_progress", "quality_check", "ready"];
 		const canBook = currentRoles().some((role) => ["admin", "hyperuser"].includes(role));
-		return `${pageHeader("Dashboard", "Ringkasan operasional Bengkel Irwan Motor hari ini", canBook ? '<a class="btn" href="#/bookings/new">+ Booking Baru</a>' : "")}
+		return `${pageHeader("Dashboard", "Ringkasan operasional 21 Motoshop hari ini", canBook ? '<a class="btn" href="#/bookings/new">+ Booking Baru</a>' : "")}
 			<section class="grid grid-4" aria-label="Indikator utama">
 				${kpi("Rp", "Pendapatan Hari Ini", money(data.revenue?.value), "D1 terbayar")}
 				${kpi("SO", "Service Order Hari Ini", Number(data.orders?.total || 0), `${Number(data.orders?.completed || 0)} selesai`)}

@@ -1,7 +1,7 @@
 export const config = Object.freeze({
 	apiBase: "/api/v1",
 	authBase: "/auth",
-	appName: "Irwan Motor",
+	appName: "21 Motoshop",
 	requestTimeoutMs: 15000,
 });
 

@@ -116,7 +116,7 @@ export const bookingDetailPage = {
 		whatsapp.className = "btn btn-secondary"; whatsapp.type = "button"; whatsapp.textContent = "Kirim WhatsApp"; actions.prepend(whatsapp);
 		whatsapp.addEventListener("click", async () => {
 			whatsapp.disabled = true;
-			try { await api.post("/providers/communications/whatsapp", { to: item.customer_phone, message: `Halo ${item.customer_name}, booking ${item.booking_no} untuk ${item.license_plate} dijadwalkan pada ${dateTime(item.scheduled_at)}. - Irwan Motor` }); toast("Konfirmasi WhatsApp diterima provider", "success"); }
+			try { await api.post("/providers/communications/whatsapp", { to: item.customer_phone, message: `Halo ${item.customer_name}, booking ${item.booking_no} untuk ${item.license_plate} dijadwalkan pada ${dateTime(item.scheduled_at)}. - 21 Motoshop` }); toast("Konfirmasi WhatsApp diterima provider", "success"); }
 			catch (error) { toast(error.message, "error"); }
 			finally { whatsapp.disabled = false; }
 		});

@@ -43,7 +43,7 @@ export function shell(content, active = "dashboard") {
 	return `<div class="app-shell">
 		<button class="sidebar-scrim" id="sidebar-scrim" aria-label="Tutup navigasi"></button>
 		<aside class="sidebar" id="sidebar" aria-label="Navigasi utama">
-			<div class="brand"><div class="brand-mark">IM</div><div><strong>Irwan Motor</strong><small>Workshop Management</small></div></div>
+			<div class="brand"><div class="brand-mark">21</div><div><strong>21 Motoshop</strong><small>Workshop Management</small></div></div>
 			<a class="btn btn-sm" href="#/bookings/new" ${primaryRole() !== "admin" ? "hidden" : ""}>＋ Booking Baru</a>
 			<nav class="nav-group">${navItems(active)}</nav>
 			<div class="sidebar-footer nav-group">

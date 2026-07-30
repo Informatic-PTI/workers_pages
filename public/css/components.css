@@ -1,4 +1,4 @@
-.btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--radius-md); padding: 8px 14px; background: var(--color-primary); color: white; font-weight: 700; transition: filter .15s, transform .15s, background .15s; }
+.btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--radius-md); padding: 8px 14px; background: var(--color-primary); color: #18191b; font-weight: 800; transition: filter .15s, transform .15s, background .15s; }
 .btn:hover { filter: brightness(.96); }
 .btn:active { transform: translateY(1px); }
 .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border); }
@@ -27,7 +27,7 @@
 .field > label { color: #394150; font-size: 12px; font-weight: 750; }
 .input, .select, .textarea { width: 100%; min-height: 42px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text); padding: 9px 12px; transition: border .15s, box-shadow .15s; }
 .textarea { min-height: 96px; resize: vertical; }
-.input:focus, .select:focus, .textarea:focus { border-color: var(--color-primary); outline: 0; box-shadow: 0 0 0 3px rgb(37 99 235 / .13); }
+.input:focus, .select:focus, .textarea:focus { border-color: #d2ad00; outline: 0; box-shadow: 0 0 0 3px rgb(255 212 0 / .22); }
 .input::placeholder, .textarea::placeholder { color: #959ba8; }
 .input-icon { position: relative; }
 .input-icon .input { padding-left: 38px; }
